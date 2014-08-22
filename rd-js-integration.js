@@ -1,6 +1,3 @@
-    var token = '96c58d10dfe995a47d8c8fa8426b2396'; //token da conta do Luciano;
-    var identificador = 'Novo Teste JS-integration';
-
     getSubmit();
 
     function getSubmit(){

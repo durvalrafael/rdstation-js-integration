@@ -8,7 +8,7 @@
       var form_data = [];
       var form;
       $(':submit').click(function(event){
-        form = $('#'+ $(this).closest('form').attr('id'));
+        form = $(this).closest('form');
         form_data = form.serializeArray();
         for(var i in form_data){
           for(var j in inputEmail){

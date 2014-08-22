@@ -5,7 +5,7 @@ var token = '96c58d10dfe995a47d8c8fa8426b2396', //token da conta do Luciano;
 function read_cookie(a) {
     var b = a + '=';
     var c = document.cookie.split(';');
-    for (d = 0; d < c.length; d++) {
+    for (var d = 0; d < c.length; d++) {
         var e = c[d];
         while (e.charAt(0) == ' ') e = e.substring(1, e.length);
         if (e.indexOf(b) == 0) {
@@ -19,7 +19,7 @@ function read_cookie(a) {
 function getSubmit() {
     var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
         form_data = [],
-        form, i, j;
+        form;
 
     $(':submit').click(function (event) {
         form = $(this).closest('form');
@@ -27,9 +27,9 @@ function getSubmit() {
             return;
         }
         form_data = form.serializeArray();
-        for (i in form_data){
+        for (var i in form_data){
           if (form_data.hasOwnProperty(i)) {
-            for (j in inputEmail) {
+            for (var j in inputEmail) {
                 if (form_data[i].name.toLowerCase() === inputEmail[j]) {
                     form_data[i].name = 'email';
                     postData(form, form_data);

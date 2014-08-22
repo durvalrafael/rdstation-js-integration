@@ -1,50 +1,52 @@
     var token = '96c58d10dfe995a47d8c8fa8426b2396'; //token da conta do Luciano;
-    var identificador = 'Teste JS-integration';
-    var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'];
-    var form_data = [];
+    var identificador = 'Novo Teste JS-integration';
 
-    searchEmailField();
+    getSubmit();
 
-    function searchEmailField(){
-      $(document).ready(function() {
-        form_data = $('form').serializeArray();
+    function getSubmit(){
+      var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'];
+      var form_data = [];
+      var form;
+      $(':submit').click(function(event){
+        form = $('#'+ $(this).closest('form').attr('id'));
+        form_data = form.serializeArray();
         for(var i in form_data){
           for(var j in inputEmail){
             if(form_data[i].name.toLowerCase() == inputEmail[j]){
-              postData();
+              form_data[i].name = 'email';
+              postData(form, form_data);
             }
           }
         }
+        event.preventDefault();
       });
     }
 
-
-    function postData(){
-        $(':submit').click(function(event){
-          var identificador_obj = {
-            'name': 'identificador',
-            'value': identificador
-          };
-          var token_obj = {
-            'name': 'token_rdstation',
-            'value': token
-          };
-          var c_utmz_obj = {
-            'name': 'c_utmz',
-            'value': read_cookie('__utmz')
-          };
-          form_data.push(identificador_obj);
-          form_data.push(token_obj);
-          form_data.push(c_utmz_obj);
-          console.log(form_data);
-          $.ajax({
-            type: 'POST',
-            url: 'http://www.rdstation.com.br/api/1.2/conversions',
-            data: form_data,
-            success: alert('posted!')
-          });
-        });
+    function postData(form, form_data){
+      var identificador_obj = {
+        'name': 'identificador',
+        'value': identificador
+      };
+      var token_obj = {
+        'name': 'token_rdstation',
+        'value': token
+      };
+      var c_utmz_obj = {
+        'name': 'c_utmz',
+        'value': read_cookie('__utmz')
+      };
+      form_data.push(identificador_obj, token_obj, c_utmz_obj);
+      $.ajax({
+        type: 'POST',
+        url: 'http://www.rdstation.com.br/api/1.2/conversions',
+        data: form_data,
+        success: function() {
+          form.submit();
+        },
+        error: function(response){console.log(response)}
+      });
     }
+
 
      function read_cookie(a) {
        var b = a + '=';

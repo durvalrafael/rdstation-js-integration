@@ -17,6 +17,7 @@ function RDStationFormIntegration(token_rdstation, identificador) {
     var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
         form_data = [],
         form;
+
     $(':submit').click(function (event) {
         form = $(this).closest('form');
         if (!form) {
@@ -37,7 +38,7 @@ function RDStationFormIntegration(token_rdstation, identificador) {
     });
 }
 
-function postData(form, form_data, token_rdstation, identificador) {
+function postData(form, form_data) {
     var identificador_obj = {
         'name': 'identificador',
         'value': identificador

@@ -13,7 +13,7 @@ function read_cookie(a) {
 };
 //
 
-function getSubmit(token_rdstation, identificador) {
+function RDStationFormIntegration(token_rdstation, identificador) {
     var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
         form_data = [],
         form;

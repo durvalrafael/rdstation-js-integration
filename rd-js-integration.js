@@ -1,6 +1,3 @@
-var token = '96c58d10dfe995a47d8c8fa8426b2396', //token da conta do Luciano;
-    identificador = 'Novo Teste JS-integration';
-
 //GOOGLE ANALYTICS
 function read_cookie(a) {
     var b = a + '=';
@@ -16,11 +13,30 @@ function read_cookie(a) {
 };
 //
 
-function getSubmit() {
+function checkJQuery(){
+//   if (typeof jQuery == "undefined"){
+//     var theNewScript = document.createElement("script");
+//     theNewScript.type = "text/javascript";
+//     theNewScript.src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+//     document.getElementsByTagName("body")[0].appendChild(theNewScript);
+//     // jQuery MAY OR MAY NOT be loaded at this stage
+//     var waitForLoad = function () {
+//         if (typeof jQuery != "undefined") {
+//             return false;
+//         } else {
+//             window.setTimeout(waitForLoad, 1000);
+//         }
+//     };
+//     window.setTimeout(waitForLoad, 1000);
+//   }
+   return false;
+}
+
+function getSubmit(token_rdstation, identificador) {
+  checkJQuery();
     var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
         form_data = [],
         form;
-
     $(':submit').click(function (event) {
         form = $(this).closest('form');
         if (!form) {
@@ -32,7 +48,7 @@ function getSubmit() {
             for (var j in inputEmail) {
                 if (form_data[i].name.toLowerCase() === inputEmail[j]) {
                     form_data[i].name = 'email';
-                    postData(form, form_data);
+                    postData(form, form_data, token_rdstation, identificador);
                 }
             }
           }
@@ -41,14 +57,14 @@ function getSubmit() {
     });
 }
 
-function postData(form, form_data) {
+function postData(form, form_data, token_rdstation, identificador) {
     var identificador_obj = {
         'name': 'identificador',
         'value': identificador
     },
         token_obj = {
         'name': 'token_rdstation',
-        'value': token
+        'value': token_rdstation
     },
         c_utmz_obj = {
         'name': 'c_utmz',
@@ -57,15 +73,18 @@ function postData(form, form_data) {
     form_data.push(identificador_obj, token_obj, c_utmz_obj);
     $.ajax({
         type: 'POST',
-        url: 'http://www.rdstation.com.br/api/1.2/conversions',
+        url: 'https://www.rdstation.com.br/api/1.2/conversions',
         data: form_data,
         success: function() {
-            form.submit();
+          form.submit();
         },
         error: function(response) {
-            console.log(response);
+          console.log(response);
         }
     });
 }
 
-getSubmit();
+function RDStationFormIntegration(token_rdstation, identificador){
+  checkJQuery();
+  getSubmit(token_rdstation, identificador);
+}

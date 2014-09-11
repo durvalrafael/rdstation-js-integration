@@ -43,14 +43,12 @@ function getSubmit(token_rdstation, identificador) {
         }
         form_data = form.serializeArray();
         for (var i in form_data) {
-            if (form_data.hasOwnProperty(i)) {
-                for (var j in inputEmail) {
-                    if (form_data[i].name.toLowerCase() === inputEmail[j]) {
-                        form_data[i].name = 'email';
-                        postData(form, form_data, token_rdstation, identificador);
-                    }
-                }
+          if (form_data.hasOwnProperty(i)) {
+            if(inputEmail.indexOf(form_data[i].name.toLowerCase()) != -1){
+              form_data[i].name = 'email';
+              postData(form, form_data, token_rdstation, identificador);
             }
+          }
         }
         event.preventDefault();
     });
@@ -61,19 +59,13 @@ function postData(form, form_data_original, token_rdstation, identificador) {
             '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call'
         ],
         password_field = false;
-    form_data = [];
+        form_data = [];
     for (var i in form_data_original) {
-        if (form_data_original.hasOwnProperty(i)) {
-            for (var j in inputPassword) {
-                if (form_data_original[i].name.toLowerCase() == inputPassword[j]) {
-                    password_field = true;
-                }
-            }
-            if (!password_field) {
-                form_data.push(form_data_original[i]);
-            }
-            password_field = false;
+      if (form_data_original.hasOwnProperty(i)) {
+        if(inputPassword.indexOf(form_data_original[i].name.toLowerCase()) == -1){
+          form_data.push(form_data_original[i]);
         }
+      }
     }
     var identificador_obj = {
             'name': 'identificador',

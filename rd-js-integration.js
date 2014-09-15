@@ -81,7 +81,7 @@ function postData(form, form_data_original, token_rdstation, identificador) {
     form_data.push(identificador_obj, token_obj, c_utmz_obj);
     $.ajax({
         type: 'POST',
-        url: 'http://www.rdstation.com.br/api/1.2/conversions',
+        url: 'https://www.rdstation.com.br/api/1.2/conversions',
         data: form_data,
         crossDomain: true,
         error: function(response) {

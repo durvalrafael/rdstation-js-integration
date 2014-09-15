@@ -41,6 +41,11 @@ function getSubmit(token_rdstation, identificador) {
         if (!form) {
             return;
         }
+        function isHidden(element) { return $(element).is("input[type=hidden]") };
+        function isPassword(element) { return $(element).is("input[type=password]") };
+        form = form.children().map(function() {
+          if (!(isHidden(this) || isPassword(this))) { return this; }
+        });
         form_data = form.serializeArray();
         for (var i in form_data) {
           if (form_data.hasOwnProperty(i)) {
@@ -55,9 +60,7 @@ function getSubmit(token_rdstation, identificador) {
 }
 
 function postData(form, form_data_original, token_rdstation, identificador) {
-    var inputPassword = ['password', 'password_confirmation', 'senha', 'confirme_senha', 'captcha',
-            '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call'
-        ];
+    var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'];
         form_data = [];
     for (var i in form_data_original) {
       if (form_data_original.hasOwnProperty(i)) {

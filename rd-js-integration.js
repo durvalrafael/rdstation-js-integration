@@ -20,18 +20,16 @@ function setJQuery(token_rdstation, identificador){
     theNewScript.src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
     document.getElementsByTagName("head")[0].appendChild(theNewScript);
   }
-  var waitForLoad = function () {
-      if (typeof jQuery != "undefined") {
-        getSubmit(token_rdstation, identificador);
-        return false;
-      } else {
-          window.setTimeout(waitForLoad, 1000);
-      }
-  };
-  window.setTimeout(waitForLoad, 1000);
   return false;
 }
 
+  function waitForLoad() {
+    if (typeof jQuery != "undefined") {
+      return true;
+    } else {
+        window.setTimeout(waitForLoad, 1000);
+    }
+  }
 
 function getSubmit(token_rdstation, identificador) {
     var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
@@ -101,5 +99,8 @@ function postData(form, form_data_original, token_rdstation, identificador) {
 
 function RDStationFormIntegration(token_rdstation, identificador) {
   setJQuery();
+  if(waitForLoad()){
+    getSubmit(token_rdstation, identificador);
+  }
 
 }

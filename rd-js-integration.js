@@ -81,7 +81,6 @@ function postData(form, form_data_original, token_rdstation, identificador) {
 
 function RDStationFormIntegration(token_rdstation, identificador) {
     if (typeof jQuery == "undefined"){
-      console.log('NAO TEM JQUERY');
       var theNewScript = document.createElement("script");
       theNewScript.type = "text/javascript";
       theNewScript.src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
@@ -89,7 +88,6 @@ function RDStationFormIntegration(token_rdstation, identificador) {
     }
     var waitForLoad = function () {
         if (typeof jQuery != "undefined") {
-          console.log('TEM JQUERY');
           getSubmit(token_rdstation, identificador);
         } else {
             window.setTimeout(waitForLoad, 1000);

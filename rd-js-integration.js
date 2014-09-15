@@ -22,7 +22,7 @@ function setJQuery(token_rdstation, identificador){
   }
   var waitForLoad = function () {
       if (typeof jQuery != "undefined") {
-        getSubmit(token_rdstation, identificador);
+        return true;
       } else {
           window.setTimeout(waitForLoad, 1000);
       }
@@ -71,16 +71,16 @@ function postData(form, form_data_original, token_rdstation, identificador) {
       }
     }
     var identificador_obj = {
-            'name': 'identificador',
-            'value': identificador
+          'name': 'identificador',
+          'value': identificador
         },
         token_obj = {
-            'name': 'token_rdstation',
-            'value': token_rdstation
+          'name': 'token_rdstation',
+          'value': token_rdstation
         },
         c_utmz_obj = {
-            'name': 'c_utmz',
-            'value': read_cookie('__utmz')
+          'name': 'c_utmz',
+          'value': read_cookie('__utmz')
         };
     form_data.push(identificador_obj, token_obj, c_utmz_obj);
     $.ajax({
@@ -98,6 +98,8 @@ function postData(form, form_data_original, token_rdstation, identificador) {
 }
 
 function RDStationFormIntegration(token_rdstation, identificador) {
-  setJQuery(token_rdstation, identificador);
+  if(setJQuery()) {
+    getSubmit(token_rdstation, identificador);
+  }
 
 }

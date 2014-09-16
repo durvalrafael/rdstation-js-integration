@@ -13,30 +13,30 @@ function read_cookie(a) {
 };
 //
 
-function checkJQuery() {
-    //   if (typeof jQuery == "undefined"){
-    //     var theNewScript = document.createElement("script");
-    //     theNewScript.type = "text/javascript";
-    //     theNewScript.src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
-    //     document.getElementsByTagName("body")[0].appendChild(theNewScript);
-    //     // jQuery MAY OR MAY NOT be loaded at this stage
-    //     var waitForLoad = function () {
-    //         if (typeof jQuery != "undefined") {
-    //             return false;
-    //         } else {
-    //             window.setTimeout(waitForLoad, 1000);
-    //         }
-    //     };
-    //     window.setTimeout(waitForLoad, 1000);
-    //   }
-    return false;
+function setJQuery(token_rdstation, identificador){
+  if (typeof jQuery == "undefined"){
+    var theNewScript = document.createElement("script");
+    theNewScript.type = "text/javascript";
+    theNewScript.src = "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+    document.getElementsByTagName("head")[0].appendChild(theNewScript);
+  }
+  return false;
 }
+
+  function waitForLoad() {
+    if (typeof jQuery != "undefined") {
+      return true;
+    } else {
+        window.setTimeout(waitForLoad, 1000);
+    }
+  }
 
 function getSubmit(token_rdstation, identificador) {
     var inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
         form_data = [],
         form;
-    $(':submit').click(function(event) {
+    $(document).ready(function() {
+      $(':submit').click(function(event) {
         form = $(this).closest('form');
         if (!form) {
             return;
@@ -56,6 +56,7 @@ function getSubmit(token_rdstation, identificador) {
           }
         }
         event.preventDefault();
+      });
     });
 }
 
@@ -97,6 +98,9 @@ function postData(form, form_data_original, token_rdstation, identificador) {
 }
 
 function RDStationFormIntegration(token_rdstation, identificador) {
-    checkJQuery();
+  setJQuery();
+  if(waitForLoad()){
     getSubmit(token_rdstation, identificador);
+  }
+
 }

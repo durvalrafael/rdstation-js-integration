@@ -1,12 +1,15 @@
+<!DOCTYPE html>
 <html>
-<head></head>
+<head> <title> </title>
+</head>
 <body>
 
 <!-- <form id="form_id" action="success.html" method="post"> -->
 <form id="1" method="post" name="form_1" action="http://teste.com.br" target="_blank">
   <input type="text" name="name" value="NOME">
   <input type="text" name="e_mail" value="E-MAIL">
-  <input type="text" name="telefone" value="TELEFONE">
+  <input type="password" name="senha" value="senha">
+  <input type="text" name="captcha" value="captcha">
 <input type="submit">
 </form>
 
@@ -16,7 +19,8 @@
 <form id="2" method="post" name="form_2" action="http://teste2.com.br" target="_blank">
   <input type="text" name="name" value="NOME 2">
   <input type="text" name="e-mail" value="E-MAIL 2">
-  <input type="text" name="telefone" value="TELEFONE 2">
+  <input type="password" name="PASSWORD_CONFIRMATION" value="">
+  <input type="hidden" name="hidden field" value="">
   <input type="submit">
 </form>
 
@@ -24,15 +28,28 @@
 <form id="3" method="post" name="form_3">
   <input type="text" name="name" value="NOME 3">
   <input type="text" name="campo de email" value="E-MAIL 3">
-  <input type="text" name="telefone" value="TELEFONE 3">
   <input type="submit">
 </form>
 
+<script type="text/javascript">
 
-<!-- <script type ='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script> -->
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+<script type ='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
 <script type ='text/javascript' src="./rd-js-integration.js"></script>
 <script type ='text/javascript'>
-    RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing Snippet');
+    RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing Password');
 </script>
 
 

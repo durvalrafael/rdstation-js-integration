@@ -3,8 +3,30 @@ function RdJsIntegration(token_rdstation, identificador){
   this.token_rdstation = token_rdstation;
   this.identificador = identificador;
   this.doIt = function(){
-    setJQuery();
-    waitForLoadJQuery(prepareData);
+    if(typeof JQuery == "undefined"){
+     loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", prepareData);
+    }else{
+      prepareData();
+    }
+    // setJQuery();
+    // waitForLoadJQuery(prepareData);
+  }
+
+
+  function loadScript(sScriptSrc, oCallback) {
+    var oHead = document.getElementsByTagName('head')[0];
+    var oScript = document.createElement('script');
+    oScript.type = 'text/javascript';
+    oScript.src = sScriptSrc;
+    // most browsers
+    oScript.onload = oCallback;
+    // IE 6 & 7
+    oScript.onreadystatechange = function() {
+      if (this.readyState == 'complete') {
+        oCallback();
+      }
+    }
+    oHead.appendChild(oScript);
   }
 
   //GOOGLE ANALYTICS
@@ -53,10 +75,10 @@ function RdJsIntegration(token_rdstation, identificador){
         }
         function isHidden(element) { return $(element).is("input[type=hidden]") };
         function isPassword(element) { return $(element).is("input[type=password]") };
-        form = form.children().map(function() {
+        var fields = form.children().map(function() {
           if (!(isHidden(this) || isPassword(this))) { return this; }
         });
-        form_data_original = form.serializeArray();
+        form_data_original = fields.serializeArray();
         
         var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'];
         for (var i in form_data_original) {
@@ -104,6 +126,7 @@ function postData(form, form_data) {
       console.log(response);
     },
     complete: function() {
+      debugger;
       form.submit();
     }
   });

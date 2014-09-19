@@ -50,51 +50,48 @@ function RdJsIntegration(token_rdstation, identificador){
     form_data = [],
     form;
 
-    $jQueryRD = jQuery;
-
-    $jQueryRD(document).ready(function() {
-      $jQueryRD(':submit').click(function(event) {
-        form = $jQueryRD(this).closest('form');
-        if (!form) {
-          return;
-        }
-        function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]") };
-        function isPassword(element) { return $jQueryRD(element).is("input[type=password]") };
-        var fields = form.children().map(function() {
-          if (!(isHidden(this) || isPassword(this))) { return this; }
-        });
-        form_data_original = fields.serializeArray();
-        for (var i in form_data_original) {
-          if (form_data_original.hasOwnProperty(i)) {
-            if(inputPassword.indexOf(form_data_original[i].name.toLowerCase()) == -1){
-              form_data.push(form_data_original[i]);
-            }
-          }
-        }
-        var identificador_obj = {
-          'name': 'identificador',
-          'value': self.identificador
-        },
-        token_obj = {
-          'name': 'token_rdstation',
-          'value': self.token_rdstation
-        },
-        c_utmz_obj = {
-          'name': 'c_utmz',
-          'value': read_cookie('__utmz')
-        };
-        form_data.push(identificador_obj, token_obj, c_utmz_obj);
-        for (var i in form_data) {
-          if (form_data.hasOwnProperty(i)) {
-            if(inputEmail.indexOf(form_data[i].name.toLowerCase()) != -1){
-              form_data[i].name = 'email';
-              postData(form, form_data);
-              event.preventDefault();
-              return;
-            }
-          }
-        }
+  $jQueryRD = jQuery;
+    $jQueryRD(':submit').click(function(event) {
+      form = $jQueryRD(this).closest('form');
+      if (!form) {
+        return;
+      }
+      function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]") };
+      function isPassword(element) { return $jQueryRD(element).is("input[type=password]") };
+      var fields = form.children().map(function() {
+        if (!(isHidden(this) || isPassword(this))) { return this; }
       });
+      form_data_original = fields.serializeArray();
+      for (var i in form_data_original) {
+        if (form_data_original.hasOwnProperty(i)) {
+          if(inputPassword.indexOf(form_data_original[i].name.toLowerCase()) == -1){
+            form_data.push(form_data_original[i]);
+          }
+        }
+      }
+      var identificador_obj = {
+        'name': 'identificador',
+        'value': self.identificador
+      },
+      token_obj = {
+        'name': 'token_rdstation',
+        'value': self.token_rdstation
+      },
+      c_utmz_obj = {
+        'name': 'c_utmz',
+        'value': read_cookie('__utmz')
+      };
+      form_data.push(identificador_obj, token_obj, c_utmz_obj);
+      for (var i in form_data) {
+        if (form_data.hasOwnProperty(i)) {
+          if(inputEmail.indexOf(form_data[i].name.toLowerCase()) != -1){
+            form_data[i].name = 'email';
+            postData(form, form_data);
+            event.preventDefault();
+            return;
+          }
+        }
+      }
     });
   }
 

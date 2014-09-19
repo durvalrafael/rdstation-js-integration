@@ -3,7 +3,7 @@ function RdJsIntegration(token_rdstation, identificador){
   this.token_rdstation = token_rdstation;
   this.identificador = identificador;
   this.doIt = function(){
-    if(typeof JQuery == "undefined"){
+    if(typeof jQuery == "undefined"){
      loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", prepareData);
     }else{
       prepareData();

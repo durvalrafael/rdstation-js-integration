@@ -1,16 +1,16 @@
 function RdJsIntegration(token_rdstation, identificador){
+  var $jQueryRD;
   var self = this;
   this.token_rdstation = token_rdstation;
   this.identificador = identificador;
+
   this.doIt = function(){
     if(typeof jQuery == "undefined"){
      loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", prepareData);
     }else{
       prepareData();
     }
-  } 
-
-
+  }
 
   function loadScript(sScriptSrc, oCallback) {
     var oHead = document.getElementsByTagName('head')[0];
@@ -49,14 +49,17 @@ function RdJsIntegration(token_rdstation, identificador){
     form_data_original = [],
     form_data = [],
     form;
-    $(document).ready(function() {
-      $(':submit').click(function(event) {
-        form = $(this).closest('form');
+
+    $jQueryRD = jQuery;
+
+    $jQueryRD(document).ready(function() {
+      $jQueryRD(':submit').click(function(event) {
+        form = $jQueryRD(this).closest('form');
         if (!form) {
           return;
         }
-        function isHidden(element) { return $(element).is("input[type=hidden]") };
-        function isPassword(element) { return $(element).is("input[type=password]") };
+        function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]") };
+        function isPassword(element) { return $jQueryRD(element).is("input[type=password]") };
         var fields = form.children().map(function() {
           if (!(isHidden(this) || isPassword(this))) { return this; }
         });
@@ -96,7 +99,7 @@ function RdJsIntegration(token_rdstation, identificador){
   }
 
   function postData(form, form_data) {
-    $.ajax({
+    $jQueryRD.ajax({
       type: 'POST',
       url: 'https://www.rdstation.com.br/api/1.2/conversions',
       data: form_data,

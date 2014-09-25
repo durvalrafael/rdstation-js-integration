@@ -31,6 +31,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['karma', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

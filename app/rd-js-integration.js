@@ -10,7 +10,7 @@ function RdJsIntegration(token_rdstation, identificador){
     }else{
       prepareData();
     }
-  }
+  };
 
   function loadScript(sScriptSrc, oCallback) {
     var oHead = document.getElementsByTagName('head')[0];
@@ -24,7 +24,7 @@ function RdJsIntegration(token_rdstation, identificador){
       if (this.readyState == 'complete') {
         oCallback();
       }
-    }
+    };
     oHead.appendChild(oScript);
   }
 
@@ -35,12 +35,12 @@ function RdJsIntegration(token_rdstation, identificador){
     for (var d = 0; d < c.length; d++) {
       var e = c[d];
       while (e.charAt(0) == ' ') e = e.substring(1, e.length);
-      if (e.indexOf(b) == 0) {
-        return e.substring(b.length, e.length)
+      if (e.indexOf(b) === 0) {
+        return e.substring(b.length, e.length);
       }
     }
-    return null
-  };
+    return null;
+  }
   //
 
   function prepareData() {
@@ -56,8 +56,8 @@ function RdJsIntegration(token_rdstation, identificador){
       if (!form) {
         return;
       }
-      function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]") };
-      function isPassword(element) { return $jQueryRD(element).is("input[type=password]") };
+      function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]"); }
+      function isPassword(element) { return $jQueryRD(element).is("input[type=password]"); }
       var fields = form.children().map(function() {
         if (!(isHidden(this) || isPassword(this))) { return this; }
       });
@@ -82,10 +82,10 @@ function RdJsIntegration(token_rdstation, identificador){
         'value': read_cookie('__utmz')
       };
       form_data.push(identificador_obj, token_obj, c_utmz_obj);
-      for (var i in form_data) {
-        if (form_data.hasOwnProperty(i)) {
-          if(inputEmail.indexOf(form_data[i].name.toLowerCase()) != -1){
-            form_data[i].name = 'email';
+      for (var j in form_data) {
+        if (form_data.hasOwnProperty(j)) {
+          if(inputEmail.indexOf(form_data[j].name.toLowerCase()) != -1){
+            form_data[j].name = 'email';
             postData(form, form_data);
             event.preventDefault();
             return;

@@ -18,7 +18,7 @@ function RdJsIntegration(token_rdstation, identificador){
     oScript.type = 'text/javascript';
     oScript.src = sScriptSrc;
     // most browsers
-    oScript.onload = oCallback;
+    oScript.onload = oCallback
     // IE 6 & 7
     oScript.onreadystatechange = function() {
       if (this.readyState == 'complete') {

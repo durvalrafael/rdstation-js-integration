@@ -1,5 +1,5 @@
 machine:
-  node.js:
+  node:
     version: 0.10.26
 test:
   pre:

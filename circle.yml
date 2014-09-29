@@ -1,11 +1,11 @@
 machine:
-	node.js:
-		version: 0.10.26
+  node.js:
+    version: 0.10.26
 test:
   pre:
-		- npm install
-		- grunt jshint
+    - npm install
+    - grunt jshint
   override:
     - grunt karma
-  post: 
+  post:
     - grunt uglify

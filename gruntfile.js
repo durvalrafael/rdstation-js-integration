@@ -55,6 +55,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-aws-s3');
 
+  grunt.registerTask('deploy', ['aws_s3']);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

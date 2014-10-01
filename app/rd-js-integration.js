@@ -44,14 +44,13 @@ function RdJsIntegration(token_rdstation, identificador){
   //
 
   function prepareData() {
-    var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
-    inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
-    form_data_original = [],
-    form_data = [],
-    form;
-
     $jQueryRD = jQuery;
     $jQueryRD(':submit').click(function(event) {
+      var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
+          inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
+          form_data_original = [],
+          form_data = [],
+          form;
       form = $jQueryRD(this).closest('form');
       if (!form) {
         return;

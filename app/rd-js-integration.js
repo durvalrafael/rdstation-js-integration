@@ -50,7 +50,7 @@ function RdJsIntegration(token_rdstation, identificador){
     form_data = [],
     form;
 
-  $jQueryRD = jQuery;
+    $jQueryRD = jQuery;
     $jQueryRD(':submit').click(function(event) {
       form = $jQueryRD(this).closest('form');
       if (!form) {
@@ -58,10 +58,11 @@ function RdJsIntegration(token_rdstation, identificador){
       }
       function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]") };
       function isPassword(element) { return $jQueryRD(element).is("input[type=password]") };
-      var fields = form.children().map(function() {
+      var inputs = $jQueryRD(form).find('input');
+      inputs = inputs.map(function() {
         if (!(isHidden(this) || isPassword(this))) { return this; }
       });
-      form_data_original = fields.serializeArray();
+      form_data_original = inputs.serializeArray();
       for (var i in form_data_original) {
         if (form_data_original.hasOwnProperty(i)) {
           if(inputPassword.indexOf(form_data_original[i].name.toLowerCase()) == -1){

@@ -6,9 +6,14 @@
 
 <!-- <form id="form_id" action="success.html" method="post"> -->
 <form id="1" method="post" name="form_1" action="http://teste.com.br" target="_blank">
-  <input type="text" name="name" value="NOME">
-  <input type="text" name="e_mail" value="E-MAIL">
+  <div class="mysite_form_row name_row">
+    <input type="text" name="name" value="NOME">
+  </div>
+  <div class="mysite_form_row email_row">
+    <input type="text" name="e_mail" value="E-MAIL">
+  </div>
   <input type="password" name="senha" value="senha">
+  <input type="hidden" name="hidden field" value="">
   <input type="text" name="captcha" value="captcha">
 <input type="submit">
 </form>
@@ -46,9 +51,9 @@
 </script>
 
 <!-- <script type ='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script> -->
-<script type ='text/javascript' src="./rd-js-integration.js"></script>
+<script type ='text/javascript' src="./app/rd-js-integration.js"></script>
 <script type ='text/javascript'>
-    RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing Password');
+    RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing input inside <div>');
 </script>
 
 </body>

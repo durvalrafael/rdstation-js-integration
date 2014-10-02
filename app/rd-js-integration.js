@@ -44,24 +44,24 @@ function RdJsIntegration(token_rdstation, identificador){
   //
 
   function prepareData() {
-    var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
-    inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
-    form_data_original = [],
-    form_data = [],
-    form;
-
-  $jQueryRD = jQuery;
+    $jQueryRD = jQuery;
     $jQueryRD(':submit').click(function(event) {
+      var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
+          inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead'],
+          form_data_original = [],
+          form_data = [],
+          form;
       form = $jQueryRD(this).closest('form');
       if (!form) {
         return;
       }
       function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]"); }
       function isPassword(element) { return $jQueryRD(element).is("input[type=password]"); }
-      var fields = form.children().map(function() {
+      var inputs = $jQueryRD(form).find('input');
+      inputs = inputs.map(function() {
         if (!(isHidden(this) || isPassword(this))) { return this; }
       });
-      form_data_original = fields.serializeArray();
+      form_data_original = inputs.serializeArray();
       for (var i in form_data_original) {
         if (form_data_original.hasOwnProperty(i)) {
           if(inputPassword.indexOf(form_data_original[i].name.toLowerCase()) == -1){

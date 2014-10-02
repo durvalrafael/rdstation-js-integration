@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    aws: grunt.file.readJSON('.aws_credentials.json'),
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -24,13 +25,37 @@ module.exports = function(grunt) {
       unit: {
         configFile: 'test/karma.conf.js'
       }
+    },
+    aws_s3: {
+      options: {
+        differential: true,
+        accessKeyId: '<%= aws.AWSAccessKeyId %>',
+        secretAccessKey: '<%= aws.AWSSecretKey %>',
+        progress: 'dots',
+        region: 'sa-east-1'
+      },
+      production: {
+        options: {
+          bucket: 'rdstation-assets-staging'
+        },
+        files: [
+          { action: 'upload',
+            expand: true,
+            cwd: 'app/',
+            src: ['<%= pkg.name %>.min.js'],
+            dest: 'js-integration/<%= pkg.version %>/'
+          }
+        ]
+      },
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-aws-s3');
 
+  grunt.registerTask('deploy', ['aws_s3']);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

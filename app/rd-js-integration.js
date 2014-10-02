@@ -55,8 +55,8 @@ function RdJsIntegration(token_rdstation, identificador){
       if (!form) {
         return;
       }
-      function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]") };
-      function isPassword(element) { return $jQueryRD(element).is("input[type=password]") };
+      function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]"); }
+      function isPassword(element) { return $jQueryRD(element).is("input[type=password]"); }
       var inputs = $jQueryRD(form).find('input');
       inputs = inputs.map(function() {
         if (!(isHidden(this) || isPassword(this))) { return this; }

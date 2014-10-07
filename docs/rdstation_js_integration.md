@@ -13,7 +13,7 @@ Todo formulário a ser integrado deve ter um input com o nome <strong>email</str
 <input type="text" name="email" />
 ```
 
-Após isso, sua página já está integrada com o RD Station. Recomendamos que a teste e veja se os dados aparecem na ferramenta de CRM.
+Após isso, sua página já está integrada com o RD Station. Recomendamos sempre testar a integração para verificar se todos dados aparecem na ferramenta de CRM.
 
 ### Integrando seus formulários
 

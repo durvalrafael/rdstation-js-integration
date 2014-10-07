@@ -5,18 +5,19 @@ Essa é a integração mais simples de ser feita. Ela pode integrar todos os seu
 
 ### Usando a API
 
-Uma característica é necessária e talvez você precise editar/adicionar na sua página para a integração funcionar:
+Existe uma característica necessária e muito importante para a integração funcionar (talvez você precise editá-la ou adicioná-a na sua página)
 
-O formulário a ser integrado deve ter um input com o nome <strong>email</strong> ou <strong>email_lead</strong>:
+
+Todo formulário a ser integrado deve ter um input com o nome <strong>email</strong> ou <strong>email_lead</strong>:
 ```HTML
-      <input type="text" name="email" />
+<input type="text" name="email" />
 ```
 
 Após isso, sua página já está integrada com o RD Station. Recomendamos que a teste e veja se os dados aparecem na ferramenta de CRM.
 
 ### Integrando seus formulários
 
-Uma vez atendidas a especificação acima, para realizar a integração você deve inserir o script abaixo na página que contém o formulário, seguindo esses passos:
+Uma vez atendida a especificação acima, para realizar a integração você deve inserir o script abaixo na página que contém o formulário, seguindo esses passos:
 + Inserir seu token RD Station onde diz `'SEU_TOKEN_RDSTATION_AQUI'`. Ele pode ser obtido nas suas [Configurações do RD Station](https://www.rdstation.com.br/docs/api);
 + Definir um identificador para o evento de conversão e inserí-lo no script abaixo onde diz `'IDENTIFICADOR DESEJADO'`;
 + Adicionar o código na página que contém o formulário.
@@ -36,20 +37,20 @@ Vale ressaltar que serão integrados todos os formulários que tiverem um input 
 
 ### Outros campos e informações do formulário
 
-Dos dados do usuário, a informação de <strong>email</strong> ou <strong>email_lead</strong> é sempre <u><strong>obritagória</strong></u>. Se não estiver presente, o formulário não será integrado.
+Dos dados do usuário, a informação de <strong>email</strong> ou <strong>email_lead</strong> é sempre <u><strong>obrigatória</strong></u>. Se não estiver presente, o formulário não será integrado.
 
 Diversos outros campos podem ser utilizados para um chaveamento automático com a ferramenta inteligente de CRM. 
 Segue uma lista:
 <ul><li>nome</li><li>telefone</li><li>empresa</li><li>cargo</li><li>twitter</li></ul>
 Eles não são obrigatórios e você não precisa inserí-los na sua página se não desejar. Mas se já usar algum parecido, pode ajustar o nome dele conforme a lista acima para uma melhor integração.
 
-Todo e qualquer dado como esses que você deseja que seja enviado ao RD Station como detalhe do seu lead deve estar em um <em>input</em> com uma tag <strong>name</strong>.
+Todo e qualquer que você deseja enviar ao RD Station como detalhe do seu lead deve estar em um <em>input</em> com uma tag <strong>name</strong>.
 ```HTML
-      <input type="text" name="Telefone" />
+<input type="text" name="Telefone" />
 ```
-Ps.: Recomenda-se que o campo de nome tenha name="name", pois assim esse será o nome do Lead criado no RD Station. Caso contrário o e-mail dele aparecerá como nome.
+Ps.: Recomenda-se que o campo de nome tenha name="name", pois assim esse será o nome do Lead criado no RD Station. Caso contrário, o e-mail do Lead aparecerá no lugar do nome.
 ```HTML
-      <input type="text" name="name" />
+<input type="text" name="name" />
 ```
 
 ### Avisos de conversão por email
@@ -63,9 +64,9 @@ A API pode retornar erro caso:
  - (400) não esteja recebendo um identificador;
  - (400) não esteja recebendo a informação <strong>email</strong> ou <strong>email_lead</strong> do formulário;
 
-É importante que se teste a integração após as modificações para evitar esses erros aparecerem para o seu visitante.
+É importante testar a integração após as modificações para evitar que erros comos esses acima apareçam para o seu visitante.
 
-Também é interessante usar alguma validação dos campos para requerer o preenchimento do campo de email, mas para isso será preciso algum controle Javascript ou de alguma outra linguagem.
+Também é interessante usar alguma validação dos campos pedidos para evitar o não preenchimento do campo de email, mas para isso será preciso algum controle Javascript ou de alguma outra linguagem.
 
 
 ### Exemplos completos

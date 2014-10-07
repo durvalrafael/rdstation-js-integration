@@ -47,6 +47,14 @@ module.exports = function(grunt) {
           }
         ]
       },
+    },
+    jsdoc : {
+        dist : {
+            src: ['app/*.js', 'test/*.js'], 
+            options: {
+                destination: 'docs'
+            }
+        }
     }
   });
 
@@ -54,8 +62,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-aws-s3');
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('deploy', ['aws_s3']);
-  grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'karma', 'uglify', 'jsdoc']);
 
 };

@@ -13,14 +13,12 @@ Todo formulário a ser integrado deve ter um input com o nome <strong>email</str
 <input type="text" name="email" />
 ```
 
-Após isso, sua página já está integrada com o RD Station. Recomendamos sempre testar a integração para verificar se todos dados aparecem na ferramenta de CRM.
-
 ### Integrando seus formulários
 
 Uma vez atendida a especificação acima, para realizar a integração você deve inserir o script abaixo na página que contém o formulário, seguindo esses passos:
-+ Inserir seu token RD Station onde diz `'SEU_TOKEN_RDSTATION_AQUI'`. Ele pode ser obtido nas suas [Configurações do RD Station](https://www.rdstation.com.br/docs/api);
-+ Definir um identificador para o evento de conversão e inserí-lo no script abaixo onde diz `'IDENTIFICADOR DESEJADO'`;
-+ Adicionar o código na página que contém o formulário.
+1 - Inserir seu token RD Station onde diz `'SEU_TOKEN_RDSTATION_AQUI'`. Ele pode ser obtido nas suas [Configurações do RD Station](https://www.rdstation.com.br/docs/api);
+2 - Definir um identificador para o evento de conversão e inserí-lo no script abaixo onde diz `'IDENTIFICADOR DESEJADO'`;
+3 - Adicionar o código na página que contém o formulário.
 
 ```HTML
 <script type ='text/javascript' src="https://s3-sa-east-1.amazonaws.com/rdstation-assets-staging/js-integration/0.1.0/rd-js-integration.min.js"></script>
@@ -29,22 +27,27 @@ Uma vez atendida a especificação acima, para realizar a integração você dev
 </script>
 ```
 
+Após esses passos, recomendamos sempre testar a integração para verificar se todos dados aparecem no RD Station.
+
+
 ### Integrar todos os formulários com o mesmo identificador
 
-Se você tem diversos formulários no seu site e gostaria de integrar todos com o mesmo identificador, você pode seguir os dois primeiros passos normalmente, e inserir o código no cabeçalho ou rodapé do seu site, em vez de inserí-lo em cada página que contém um formulário.
+Se você tem diversos formulários no seu site e gostaria de integrar todos com o mesmo identificador, você precisa ter um item que esteja presente em todas as páginas. Esse item pode ser, por exemplo, um `footer.php`.
 
-Vale ressaltar que serão integrados todos os formulários que tiverem um input com o nome <strong>email</strong> ou <strong>email_lead</strong>. Caso contrário, o formulário não será integrado.
+Para realizar essa integração, pode seguir os dois primeiros passos normalmente, e inserir o código nessa "página onipresente", em vez de inserí-lo em cada página que contém um formulário.
+
+Vale ressaltar que somente serão integrados os formulários que tiverem um input com o nome <strong>email</strong> ou <strong>email_lead</strong>.
 
 ### Outros campos e informações do formulário
 
-Dos dados do usuário, a informação de <strong>email</strong> ou <strong>email_lead</strong> é sempre <u><strong>obrigatória</strong></u>. Se não estiver presente, o formulário não será integrado.
+Dos dados do usuário, a informação de e-mail (<strong>email</strong> ou <strong>email_lead</strong>) é <u><strong>obrigatória</strong></u>. Se não estiver presente, o formulário não será integrado.
 
 Diversos outros campos podem ser utilizados para um chaveamento automático com a ferramenta inteligente de CRM. 
 Segue uma lista:
 <ul><li>nome</li><li>telefone</li><li>empresa</li><li>cargo</li><li>twitter</li></ul>
 Eles não são obrigatórios e você não precisa inserí-los na sua página se não desejar. Mas se já usar algum parecido, pode ajustar o nome dele conforme a lista acima para uma melhor integração.
 
-Todo e qualquer que você deseja enviar ao RD Station como detalhe do seu lead deve estar em um <em>input</em> com uma tag <strong>name</strong>.
+Todas as informações que você deseja enviar ao RD Station deve estar em um <em>input</em> com uma tag <strong>name</strong>. Essas informações ficarão disponíveis nos detalhes da conversão do lead.
 ```HTML
 <input type="text" name="Telefone" />
 ```

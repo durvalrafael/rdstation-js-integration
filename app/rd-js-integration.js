@@ -112,10 +112,9 @@ function RdJsIntegration(token_rdstation, identificador){
 }
 
 /**
-  @param {string} token_rdstation - user's RD Station API Token
+  @param {string} token_rdstation - RD Station API Token
   @param {string} identificador - Conversion's event name which will be posted to RD Station
 */
-
 function RDStationFormIntegration(token_rdstation, identificador) {
   var integration = new RdJsIntegration(token_rdstation, identificador);
   integration.doIt();

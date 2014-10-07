@@ -74,7 +74,7 @@ Também é interessante usar alguma validação dos campos pedidos para evitar o
 
 ### Exemplos completos
 
-Na código HTML abaixo, é possível ver uma página com um formulário simples que envia as informações para a API e depois redireciona o visitante para outra página.
+No código HTML abaixo, é possível ver uma página com um formulário simples que envia as informações para a API e depois redireciona o visitante para outra página.
 
 ```HTML
 <!DOCTYPE html>

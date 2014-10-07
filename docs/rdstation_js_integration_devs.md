@@ -27,7 +27,8 @@ RD Station Integration uses Circle CI! Everytime you push anything to Github, Ci
 ### Amazon Cloudfront deploy
 
 Gruntfile has a task `deploy` for deploying any `app/*.min.js` file into Amazon Cloudfront. In case you need to upload any other file to Amazon, you should add it to the `grunt deploy` task.
-You may have noticed that the script wasn’t deployed after it has passed the tests. We made this choice due to secutiry reasons: The `grunt deploy` task needs the Amazon credentials', since the repository is public, it's not safe to reveal company credentials in it. To avoid test errors, you find at Github a file with generic credentials for amazon `/.aws_credentials.json`. 
+
+You may have noticed that the script wasn’t deployed after it has passed the tests. We made this choice due to secutiry reasons: The `grunt deploy` task needs the Amazon credentials. Since the repository is public, it's not safe to reveal company credentials in it. To avoid test errors, you will find at project files a `.json` with generic credentials for amazon: `/.aws_credentials.json`.
 
 To make deploy task works, fill `.aws_credentials` with your Amazon S3 credentials.
 

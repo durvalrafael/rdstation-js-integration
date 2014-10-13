@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    aws: grunt.file.readJSON('.aws_credentials.json'),
+    aws: grunt.file.readJSON('.aws_config.json'),
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'app/',
             src: ['<%= pkg.name %>.min.js'],
-            dest: '<%= aws.destination %>'/<%= pkg.version %>/'
+            dest: '<%= aws.destination %>/<%= pkg.version %>/'
           }
         ]
       },

@@ -1,0 +1,6 @@
+  {
+    "AWSAccessKeyId": "AKxxxxxxxxxx",
+    "AWSSecretKey": "super-secret-key",
+    "bucket": "rdstation-static",
+    "destination": "js/integration"
+  }

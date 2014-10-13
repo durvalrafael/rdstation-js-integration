@@ -36,14 +36,14 @@ module.exports = function(grunt) {
       },
       production: {
         options: {
-          bucket: 'rdstation-assets-staging'
+          bucket: 'rdstation-static'
         },
         files: [
           { action: 'upload',
             expand: true,
             cwd: 'app/',
             src: ['<%= pkg.name %>.min.js'],
-            dest: 'js-integration/<%= pkg.version %>/'
+            dest: 'js/integration/<%= pkg.version %>/'
           }
         ]
       },

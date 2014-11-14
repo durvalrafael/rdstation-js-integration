@@ -69,7 +69,7 @@ var RdJsIntegration = (function($){
 
       accountSetttings = getAccountSettings(); 
       fields.push(accountSetttings.identifier, accountSetttings.token, accountSetttings.c_utmz);
-      postData(fields);
+      _post(fields);
       event.preventDefault();
       return;
     });
@@ -156,8 +156,23 @@ var RdJsIntegration = (function($){
     return false;
   }
 
-  postData = function(dataArray) {
+  isEmail = function() {
 
+  }
+
+  _post = function(formData) {
+    $.ajax({
+      type: 'POST',
+      url: 'https://www.rdstation.com.br/api/1.2/conversions',
+      data: formData,
+      crossDomain: true,
+      error: function(response) {
+        console.log(response);
+      },
+      complete: function() {
+        form.submit();
+      }
+    });
   }
 
 

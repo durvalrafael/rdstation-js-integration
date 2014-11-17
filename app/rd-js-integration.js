@@ -1,17 +1,17 @@
 var RdIntegration = (function () {
   'use strict';
-  var token_rdstation = "",
-    identifier = "",
-    custom_params = {},
-    form,
+  var $form,
+    $token_rdstation,
+    $identifier,
+    $custom_params,
+
     REJECTED_FIELDS = ['captcha', '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
     $,
 
     _integrate = function (token_rdstation, identifier, custom_params) {
-      setToken_rdstation(token_rdstation);
-      setIdentifier(identifier);
-      setCustom_params(custom_params);
+      setParams(token_rdstation, identifier, custom_params);
+
       if (typeof jQuery === "undefined") {
         loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", prepareData);
       } else {
@@ -19,16 +19,10 @@ var RdIntegration = (function () {
       }
     },
 
-    setToken_rdstation = function (token) {
-      token_rdstation = token;
-    },
-
-    setIdentifier = function (ident) {
-      identifier = ident;
-    },
-
-    setCustom_params = function (params) {
-      custom_params = params;
+    setParams = function (token_rdstation, identifier, custom_params) {
+      $custom_params = custom_params || {};
+      $token_rdstation = token_rdstation;
+      $identifier = identifier;
     },
 
     loadScript = function (scriptSource, callback) {
@@ -51,35 +45,33 @@ var RdIntegration = (function () {
     prepareData = function () {
       $ = jQuery;
       $(':submit').click(function (event) {
-        var inputs;
-        form = findForm(this);
-        if (!form) {
-          return;
-        }
-        inputs = getClearInputs();
-        inputs = getClearFields(inputs);
-        if (!findEmail(inputs)) {
-          return;
-        }
-        accountSetttings = getAccountSettings();
-        inputs.push(accountSetttings.identifier, accountSetttings.token, accountSetttings.c_utmz);
-        _post(inputs);
-        event.preventDefault();
+        submitClickHandler(event);
         return;
       });
+    },
+
+    submitClickHandler = function (event) {
+      var inputs, accountSettings;
+
+      $form = findForm(this);
+      if (!$form) {
+        return;
+      }
+      inputs = getClearInputs();
+      inputs = getClearFields(inputs);
+      if (!findEmail(inputs)) {
+        return;
+      }
+      accountSettings = getAccountSettings();
+      inputs.push(accountSettings.identifier, accountSettings.token, accountSettings.c_utmz);
+      _post(inputs);
+      event.preventDefault();
     },
 
     findForm = function (button) {
       return $(button).closest('form');
     },
 
-    getNotAllowedInputs = function () {
-      return REJECTED_FIELDS;
-    },
-
-    getCOMMON_EMAIL_FIELDS = function () {
-      return COMMON_EMAIL_FIELDS;
-    },
 
     isHidden = function (element) {
       return $(element).is("input[type=hidden]");
@@ -90,7 +82,7 @@ var RdIntegration = (function () {
     },
 
     getClearInputs = function () {
-      var inputs = $(form).find('input');
+      var inputs = $($form).find('input');
       inputs = inputs.map(function () {
         if (!(isHidden(this) || isPassword(this))) { return this; }
       });
@@ -98,8 +90,7 @@ var RdIntegration = (function () {
     },
 
     getClearFields = function (inputs) {
-      var notAllowedInputs = getNotAllowedInputs(),
-        currentInput,
+      var currentInput,
         fields = [],
         i;
 
@@ -108,7 +99,7 @@ var RdIntegration = (function () {
       for (i in inputs) {
         if (inputs.hasOwnProperty(i)) {
           currentInput = inputs[i].name.toLowerCase();
-          if (notAllowedInputs.indexOf(currentInput) === -1) {
+          if (REJECTED_FIELDS.indexOf(currentInput) === -1) {
             fields.push(inputs[i]);
           }
         }
@@ -120,11 +111,11 @@ var RdIntegration = (function () {
       return {
         identifier: {
           name : 'identificador',
-          value: identifier
+          value: $identifier
         },
         token: {
           name: 'token_rdstation',
-          value: token_rdstation
+          value: $token_rdstation
         },
         c_utmz: {
           name: 'c_utmz',
@@ -134,14 +125,13 @@ var RdIntegration = (function () {
     },
 
     findEmail = function (fields) {
-      var common_fields = getCOMMON_EMAIL_FIELDS(),
-        currentField,
+      var currentField,
         j;
 
       for (j in fields) {
         if (fields.hasOwnProperty(j)) {
           currentField = fields[j].name.toLowerCase();
-          if (common_fields.indexOf(currentField) !== -1) {
+          if (COMMON_EMAIL_FIELDS.indexOf(currentField) !== -1) {
             fields[j].name = 'email';
             return true;
           }
@@ -177,7 +167,7 @@ var RdIntegration = (function () {
           console.log(response);
         },
         complete: function () {
-          form.submit();
+          $form.submit();
         }
       });
     };
@@ -191,8 +181,5 @@ var RdIntegration = (function () {
 
 function RDStationFormIntegration(token_rdstation, identifier, custom_params) {
   'use strict';
-  if (typeof custom_params === "undefined") {
-    custom_params = {};
-  }
   RdIntegration.Integrate(token_rdstation, identifier, custom_params);
 }

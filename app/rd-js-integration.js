@@ -45,23 +45,27 @@ var RdIntegration = (function () {
     prepareData = function () {
       $ = jQuery;
       $(':submit').click(function (event) {
-        submitClickHandler(event);
+        var element = this
+        submitClickHandler(element, event);
         return;
       });
     },
 
-    submitClickHandler = function (event) {
+    submitClickHandler = function (element, event) {
       var inputs, accountSettings;
 
-      $form = findForm(this);
+      $form = findForm(element);
       if (!$form) {
         return;
       }
-      inputs = getClearInputs();
-      inputs = getClearFields(inputs);
+
+      var inputs = $($form).find('input');
+      inputs = removeNotAllowedFields(inputs);
+
       if (!findEmail(inputs)) {
         return;
       }
+
       accountSettings = getAccountSettings();
       inputs.push(accountSettings.identifier, accountSettings.token, accountSettings.c_utmz);
       _post(inputs);
@@ -81,30 +85,16 @@ var RdIntegration = (function () {
       return $(element).is("input[type=password]");
     },
 
-    getClearInputs = function () {
-      var inputs = $($form).find('input');
+    removeNotAllowedFields = function (inputs) {
       inputs = inputs.map(function () {
-        if (!(isHidden(this) || isPassword(this))) { return this; }
-      });
-      return inputs;
-    },
-
-    getClearFields = function (inputs) {
-      var currentInput,
-        fields = [],
-        i;
-
-      inputs = inputs.serializeArray();
-
-      for (i in inputs) {
-        if (inputs.hasOwnProperty(i)) {
-          currentInput = inputs[i].name.toLowerCase();
-          if (REJECTED_FIELDS.indexOf(currentInput) === -1) {
-            fields.push(inputs[i]);
+        if (!(isHidden(this) || isPassword(this))) {
+          var name = $(this).attr('name') || "";
+          if (name && REJECTED_FIELDS.indexOf(name.toLowerCase()) === -1) {
+            return this;
           }
         }
-      }
-      return fields;
+      });
+      return inputs.serializeArray();
     },
 
     getAccountSettings = function () {

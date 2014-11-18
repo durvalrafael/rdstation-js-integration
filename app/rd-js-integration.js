@@ -9,23 +9,28 @@ var RdIntegration = (function () {
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
     $,
 
-    _integrate = function (token_rdstation, identifier, custom_params) {
-      setParams(token_rdstation, identifier, custom_params);
-
+    _withjQuery = function(callback) {
       if (typeof jQuery === "undefined") {
-        loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", prepareData);
+        _loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", callback);
       } else {
-        prepareData();
+        callback();
       }
     },
 
-    setParams = function (token_rdstation, identifier, custom_params) {
+    _integrate = function (token_rdstation, identifier, custom_params) {
+      _withjQuery(function () {
+        _prepareData();
+        _setParams(token_rdstation, identifier, custom_params);
+      });
+    },
+
+    _setParams = function (token_rdstation, identifier, custom_params) {
       $custom_params = custom_params || {};
       $token_rdstation = token_rdstation;
       $identifier = identifier;
     },
 
-    loadScript = function (scriptSource, callback) {
+    _loadScript = function (scriptSource, callback) {
       var head = document.getElementsByTagName('head')[0],
         script = document.createElement('script');
 
@@ -42,52 +47,55 @@ var RdIntegration = (function () {
       head.appendChild(script);
     },
 
-    prepareData = function () {
+    _prepareData = function () {
       $ = jQuery;
       $(':submit').click(function (event) {
-        var element = this;
-        submitClickHandler(element, event);
+        _submitClickHandler(event);
         return;
       });
     },
 
-    submitClickHandler = function (element, event) {
+    _submitClickHandler = function (event) {
       var inputs, accountSettings;
 
-      $form = findForm(element);
+      $form = _findForm(event.target);
       if (!$form) {
         return;
       }
 
       inputs = $($form).find('input');
-      inputs = removeNotAllowedFields(inputs);
+      inputs = _removeNotAllowedFields(inputs);
 
-      if (!findEmail(inputs)) {
+      if (!_findEmail(inputs)) {
         return;
       }
 
-      accountSettings = getAccountSettings();
+      accountSettings = _getAccountSettings();
       inputs.push(accountSettings.identifier, accountSettings.token, accountSettings.c_utmz);
-      _post(inputs);
+
+      _post(inputs, function () {
+        $form.submit();
+      });
+
       event.preventDefault();
     },
 
-    findForm = function (button) {
+    _findForm = function (button) {
       return $(button).closest('form');
     },
 
 
-    isHidden = function (element) {
+    _isHidden = function (element) {
       return $(element).is("input[type=hidden]");
     },
 
-    isPassword = function (element) {
+    _isPassword = function (element) {
       return $(element).is("input[type=password]");
     },
 
-    removeNotAllowedFields = function (inputs) {
+    _removeNotAllowedFields = function (inputs) {
       inputs = inputs.map(function () {
-        if (!(isHidden(this) || isPassword(this))) {
+        if (!(_isHidden(this) || _isPassword(this))) {
           var name = $(this).attr('name') || "";
           if (name && REJECTED_FIELDS.indexOf(name.toLowerCase()) === -1) {
             return this;
@@ -97,7 +105,7 @@ var RdIntegration = (function () {
       return inputs.serializeArray();
     },
 
-    getAccountSettings = function () {
+    _getAccountSettings = function () {
       return {
         identifier: {
           name : 'identificador',
@@ -109,12 +117,12 @@ var RdIntegration = (function () {
         },
         c_utmz: {
           name: 'c_utmz',
-          value: read_cookie('__utmz')
+          value: _read_cookie('__utmz')
         }
       };
     },
 
-    findEmail = function (fields) {
+    _findEmail = function (fields) {
       var currentField,
         j;
 
@@ -130,7 +138,7 @@ var RdIntegration = (function () {
       return false;
     },
 
-    read_cookie = function (name) {
+    _read_cookie = function (name) {
       var cookies = document.cookie.split(';'),
         d,
         cookie;
@@ -147,29 +155,33 @@ var RdIntegration = (function () {
       return null;
     },
 
-    _post = function (formData) {
-      $.ajax({
-        type: 'POST',
-        url: 'https://www.rdstation.com.br/api/1.2/conversions',
-        data: formData,
-        crossDomain: true,
-        error: function (response) {
-          console.log(response);
-        },
-        complete: function () {
-          $form.submit();
-        }
+    _post = function (formData, callback) {
+      _withjQuery(function () {
+        $.ajax({
+          type: 'POST',
+          url: 'https://www.rdstation.com.br/api/1.2/conversions',
+          data: formData,
+          crossDomain: true,
+          error: function (response) {
+            console.log(response);
+          },
+          complete: function () {
+            if (callback) {
+              callback();
+            }
+          }
+        });
       });
     };
 
   return {
-    Integrate: _integrate,
-    Post: _post
+    integrate: _integrate,
+    post: _post
   };
 
 }());
 
 function RDStationFormIntegration(token_rdstation, identifier, custom_params) {
   'use strict';
-  RdIntegration.Integrate(token_rdstation, identifier, custom_params);
+  RdIntegration.integrate(token_rdstation, identifier, custom_params);
 }

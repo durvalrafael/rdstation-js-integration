@@ -6,9 +6,6 @@ var RdIntegration = (function () {
     $custom_params,
     $accountSettings,
 
-    FORM_NOT_FOUND_ERROR = 'FORM_NOT_FOUND_ERROR',
-    EMAIL_FIELD_NOT_FOUND_ERROR = 'EMAIL_FIELD_NOT_FOUND_ERROR',
-
     REJECTED_FIELDS = ['captcha', '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
     $,

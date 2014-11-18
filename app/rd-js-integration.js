@@ -45,7 +45,7 @@ var RdIntegration = (function () {
     prepareData = function () {
       $ = jQuery;
       $(':submit').click(function (event) {
-        var element = this
+        var element = this;
         submitClickHandler(element, event);
         return;
       });
@@ -59,7 +59,7 @@ var RdIntegration = (function () {
         return;
       }
 
-      var inputs = $($form).find('input');
+      inputs = $($form).find('input');
       inputs = removeNotAllowedFields(inputs);
 
       if (!findEmail(inputs)) {

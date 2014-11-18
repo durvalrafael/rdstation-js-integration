@@ -4,6 +4,10 @@ var RdIntegration = (function () {
     $token_rdstation,
     $identifier,
     $custom_params,
+    $accountSettings,
+
+    FORM_NOT_FOUND_ERROR = 'FORM_NOT_FOUND_ERROR',
+    EMAIL_FIELD_NOT_FOUND_ERROR = 'EMAIL_FIELD_NOT_FOUND_ERROR',
 
     REJECTED_FIELDS = ['captcha', '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
@@ -19,8 +23,9 @@ var RdIntegration = (function () {
 
     _integrate = function (token_rdstation, identifier, custom_params) {
       _withjQuery(function () {
-        _prepareData();
+        $ = jQuery;
         _setParams(token_rdstation, identifier, custom_params);
+        _bindSubmitCallback();
       });
     },
 
@@ -47,36 +52,25 @@ var RdIntegration = (function () {
       head.appendChild(script);
     },
 
-    _prepareData = function () {
-      $ = jQuery;
-      $(':submit').click(function (event) {
-        _submitClickHandler(event);
-        return;
-      });
+    _bindSubmitCallback = function () {
+      $(':submit').click(_submitClickHandler);
     },
 
     _submitClickHandler = function (event) {
-      var inputs, accountSettings;
+      $accountSettings = _getAccountSettings();
 
       $form = _findForm(event.target);
       if (!$form) {
         return;
       }
 
-      inputs = $($form).find('input');
-      inputs = _removeNotAllowedFields(inputs);
+      var inputs =  _prepareFormData();
 
       if (!_findEmail(inputs)) {
         return;
       }
 
-      accountSettings = _getAccountSettings();
-      inputs.push(accountSettings.identifier, accountSettings.token, accountSettings.c_utmz);
-
-      _post(inputs, function () {
-        $form.submit();
-      });
-
+      _post(inputs, _submitForm);
       event.preventDefault();
     },
 
@@ -84,25 +78,42 @@ var RdIntegration = (function () {
       return $(button).closest('form');
     },
 
+    _prepareFormData = function () {
+      var inputs = $($form).find(':input');
+      inputs = _removeNotAllowedFields(inputs);
+      inputs = inputs.serializeArray();
+      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz);
+      return inputs;
+    },
+
+    _submitForm = function () {
+      $form.submit();
+    },
 
     _isHidden = function (element) {
-      return $(element).is("input[type=hidden]");
+      return $(element).is(":hidden");
     },
 
     _isPassword = function (element) {
-      return $(element).is("input[type=password]");
+      return $(element).is(":password");
     },
 
     _removeNotAllowedFields = function (inputs) {
       inputs = inputs.map(function () {
-        if (!(_isHidden(this) || _isPassword(this))) {
-          var name = $(this).attr('name') || "";
-          if (name && REJECTED_FIELDS.indexOf(name.toLowerCase()) === -1) {
-            return this;
-          }
+        if (_isAllowedField(this)) {
+          return this;
         }
       });
-      return inputs.serializeArray();
+      return inputs;
+    },
+
+    _isAllowedField = function (element) {
+      return !(_isHidden(element) || _isPassword(element) || _isRejectedField(element));
+    },
+
+    _isRejectedField = function (element) {
+      var name = $(element).attr('name') || "";
+      return (name && REJECTED_FIELDS.indexOf(name.toLowerCase()) >= 0);
     },
 
     _getAccountSettings = function () {
@@ -123,19 +134,19 @@ var RdIntegration = (function () {
     },
 
     _findEmail = function (fields) {
-      var currentField,
-        j;
-
-      for (j in fields) {
-        if (fields.hasOwnProperty(j)) {
-          currentField = fields[j].name.toLowerCase();
-          if (COMMON_EMAIL_FIELDS.indexOf(currentField) !== -1) {
-            fields[j].name = 'email';
-            return true;
-          }
+      var found = false;
+      $.each(fields, function () {
+        if (_isEmailField(this)) {
+          this.name = 'email';
+          found = true;
+          return false;
         }
-      }
-      return false;
+      });
+      return found;
+    },
+
+    _isEmailField = function (field) {
+      return COMMON_EMAIL_FIELDS.indexOf(field.name.toLowerCase()) >= 0;
     },
 
     _read_cookie = function (name) {
@@ -157,7 +168,7 @@ var RdIntegration = (function () {
 
     _post = function (formData, callback) {
       _withjQuery(function () {
-        $.ajax({
+        jQuery.ajax({
           type: 'POST',
           url: 'https://www.rdstation.com.br/api/1.2/conversions',
           data: formData,

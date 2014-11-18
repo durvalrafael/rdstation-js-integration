@@ -4,7 +4,6 @@
 </head>
 <body>
 
-<!-- <form id="form_id" action="success.html" method="post"> -->
 <form id="1" method="post" name="form_1" action="http://teste.com.br" target="_blank">
   <div class="mysite_form_row name_row">
     <input type="text" name="name" value="NOME">
@@ -20,15 +19,21 @@
 
 <p>
 
-
 <form id="2" method="post" name="form_2" action="http://teste2.com.br" target="_blank">
   <input type="text" name="name" value="NOME 2">
   <input type="text" name="e-mail" value="E-MAIL 2">
-  <input type="password" name="PASSWORD_CONFIRMATION" value="">
+  <input type="text" name="lingua" value="lingua">
+  <input type="email" name="type email" value="email@email.com">
+  <input type="password" name="pindamonhangaba" value="">
   <input type="hidden" name="hidden field" value="">
+  <textarea name="area de texto">textarea</textarea>
+  <select name="estado">
+    <option>Santa Catarina</option>
+    <option selected>Parana</option>
+    <option>Sao Paulo</option>
+  </select>
   <input type="submit">
 </form>
-
 
 <form id="3" method="post" name="form_3">
   <input type="text" name="name" value="NOME 3">
@@ -39,7 +44,7 @@
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+  _gaq.push(['_setAccount', 'UA-52865009-1']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -53,7 +58,8 @@
 <!-- <script type ='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script> -->
 <script type ='text/javascript' src="./app/rd-js-integration.js"></script>
 <script type ='text/javascript'>
-    RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing input inside <div>');
+    // RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing input inside <div>');
+    RdIntegration.integrate('96c58d10dfe995a47d8c8fa8426b2396', 'Enviando parametros', {});
 </script>
 
 </body>

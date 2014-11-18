@@ -1,121 +1,195 @@
-function RdJsIntegration(token_rdstation, identificador){
-  var $jQueryRD;
-  var self = this;
-  this.token_rdstation = token_rdstation;
-  this.identificador = identificador;
+var RdIntegration = (function () {
+  'use strict';
+  var $form,
+    $token_rdstation,
+    $identifier,
+    $custom_params,
+    $accountSettings,
 
-  this.doIt = function(){
-    if(typeof jQuery == "undefined"){
-     loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", prepareData);
-    }else{
-      prepareData();
-    }
-  };
+    REJECTED_FIELDS = ['captcha', '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
+    COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
+    $,
 
-  function loadScript(sScriptSrc, oCallback) {
-    var oHead = document.getElementsByTagName('head')[0];
-    var oScript = document.createElement('script');
-    oScript.type = 'text/javascript';
-    oScript.src = sScriptSrc;
-    // most browsers
-    oScript.onload = oCallback;
-    // IE 6 & 7
-    oScript.onreadystatechange = function() {
-      if (this.readyState == 'complete') {
-        oCallback();
+    _withjQuery = function(callback) {
+      if (typeof jQuery === "undefined") {
+        _loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", callback);
+      } else {
+        callback();
       }
-    };
-    oHead.appendChild(oScript);
-  }
+    },
 
-  //GOOGLE ANALYTICS
-  function read_cookie(a) {
-    var b = a + '=';
-    var c = document.cookie.split(';');
-    for (var d = 0; d < c.length; d++) {
-      var e = c[d];
-      while (e.charAt(0) == ' ') e = e.substring(1, e.length);
-      if (e.indexOf(b) === 0) {
-        return e.substring(b.length, e.length);
-      }
-    }
-    return null;
-  }
-  //
+    _integrate = function (token_rdstation, identifier, custom_params) {
+      _withjQuery(function () {
+        $ = jQuery;
+        _setParams(token_rdstation, identifier, custom_params);
+        _bindSubmitCallback();
+      });
+    },
 
-  function prepareData() {
-    $jQueryRD = jQuery;
-    $jQueryRD(':submit').click(function(event) {
-      var inputPassword = ['captcha','_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
-          inputEmail = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
-          form_data_original = [],
-          form_data = [],
-          form;
-      form = $jQueryRD(this).closest('form');
-      if (!form) {
+    _setParams = function (token_rdstation, identifier, custom_params) {
+      $custom_params = custom_params || {};
+      $token_rdstation = token_rdstation;
+      $identifier = identifier;
+    },
+
+    _loadScript = function (scriptSource, callback) {
+      var head = document.getElementsByTagName('head')[0],
+        script = document.createElement('script');
+
+      script.type = 'text/javascript';
+      script.src = scriptSource;
+      // most browsers
+      script.onload = callback;
+      // IE 6 & 7
+      script.onreadystatechange = function () {
+        if (this.readyState === 'complete') {
+          callback();
+        }
+      };
+      head.appendChild(script);
+    },
+
+    _bindSubmitCallback = function () {
+      $(':submit').click(_submitClickHandler);
+    },
+
+    _submitClickHandler = function (event) {
+      $accountSettings = _getAccountSettings();
+
+      $form = _findForm(event.target);
+      if (!$form) {
         return;
       }
-      function isHidden(element) { return $jQueryRD(element).is("input[type=hidden]"); }
-      function isPassword(element) { return $jQueryRD(element).is("input[type=password]"); }
-      var inputs = $jQueryRD(form).find('input');
-      inputs = inputs.map(function() {
-        if (!(isHidden(this) || isPassword(this))) { return this; }
+
+      var inputs =  _prepareFormData();
+
+      if (!_findEmail(inputs)) {
+        return;
+      }
+
+      _post(inputs, _submitForm);
+      event.preventDefault();
+    },
+
+    _findForm = function (button) {
+      return $(button).closest('form');
+    },
+
+    _prepareFormData = function () {
+      var inputs = $($form).find(':input');
+      inputs = _removeNotAllowedFields(inputs);
+      inputs = inputs.serializeArray();
+      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz);
+      return inputs;
+    },
+
+    _submitForm = function () {
+      $form.submit();
+    },
+
+    _isHidden = function (element) {
+      return $(element).is(":hidden");
+    },
+
+    _isPassword = function (element) {
+      return $(element).is(":password");
+    },
+
+    _removeNotAllowedFields = function (inputs) {
+      inputs = inputs.map(function () {
+        if (_isAllowedField(this)) {
+          return this;
+        }
       });
-      form_data_original = inputs.serializeArray();
-      for (var i in form_data_original) {
-        if (form_data_original.hasOwnProperty(i)) {
-          if(inputPassword.indexOf(form_data_original[i].name.toLowerCase()) == -1){
-            form_data.push(form_data_original[i]);
-          }
+      return inputs;
+    },
+
+    _isAllowedField = function (element) {
+      return !(_isHidden(element) || _isPassword(element) || _isRejectedField(element));
+    },
+
+    _isRejectedField = function (element) {
+      var name = $(element).attr('name') || "";
+      return (name && REJECTED_FIELDS.indexOf(name.toLowerCase()) >= 0);
+    },
+
+    _getAccountSettings = function () {
+      return {
+        identifier: {
+          name : 'identificador',
+          value: $identifier
+        },
+        token: {
+          name: 'token_rdstation',
+          value: $token_rdstation
+        },
+        c_utmz: {
+          name: 'c_utmz',
+          value: _read_cookie('__utmz')
         }
-      }
-      var identificador_obj = {
-        'name': 'identificador',
-        'value': self.identificador
-      },
-      token_obj = {
-        'name': 'token_rdstation',
-        'value': self.token_rdstation
-      },
-      c_utmz_obj = {
-        'name': 'c_utmz',
-        'value': read_cookie('__utmz')
       };
-      form_data.push(identificador_obj, token_obj, c_utmz_obj);
-      for (var j in form_data) {
-        if (form_data.hasOwnProperty(j)) {
-          if(inputEmail.indexOf(form_data[j].name.toLowerCase()) != -1){
-            form_data[j].name = 'email';
-            postData(form, form_data);
-            event.preventDefault();
-            return;
-          }
+    },
+
+    _findEmail = function (fields) {
+      var found = false;
+      $.each(fields, function () {
+        if (_isEmailField(this)) {
+          this.name = 'email';
+          found = true;
+          return false;
+        }
+      });
+      return found;
+    },
+
+    _isEmailField = function (field) {
+      return COMMON_EMAIL_FIELDS.indexOf(field.name.toLowerCase()) >= 0;
+    },
+
+    _read_cookie = function (name) {
+      var cookies = document.cookie.split(';'),
+        d,
+        cookie;
+
+      name = name + '=';
+
+      for (d = 0; d < cookies.length; d++) {
+        cookie = cookies[d];
+        while (cookie.charAt(0) === ' ') { cookie = cookie.substring(1, cookie.length); }
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
         }
       }
-    });
-  }
+      return null;
+    },
 
-  function postData(form, form_data) {
-    $jQueryRD.ajax({
-      type: 'POST',
-      url: 'https://www.rdstation.com.br/api/1.2/conversions',
-      data: form_data,
-      crossDomain: true,
-      error: function(response) {
-        console.log(response);
-      },
-      complete: function() {
-        form.submit();
-      }
-    });
-  }
-}
+    _post = function (formData, callback) {
+      _withjQuery(function () {
+        jQuery.ajax({
+          type: 'POST',
+          url: 'https://www.rdstation.com.br/api/1.2/conversions',
+          data: formData,
+          crossDomain: true,
+          error: function (response) {
+            console.log(response);
+          },
+          complete: function () {
+            if (callback) {
+              callback();
+            }
+          }
+        });
+      });
+    };
 
-/**
-  @param {string} token_rdstation - RD Station API Token
-  @param {string} identificador - Conversion's event name which will be posted to RD Station
-*/
-function RDStationFormIntegration(token_rdstation, identificador) {
-  var integration = new RdJsIntegration(token_rdstation, identificador);
-  integration.doIt();
+  return {
+    integrate: _integrate,
+    post: _post
+  };
+
+}());
+
+function RDStationFormIntegration(token_rdstation, identifier, custom_params) {
+  'use strict';
+  RdIntegration.integrate(token_rdstation, identifier, custom_params);
 }

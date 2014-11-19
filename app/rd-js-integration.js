@@ -85,7 +85,7 @@ var RdIntegration = (function () {
     },
 
     _fieldMap = function (inputs) {
-      if (options.fieldMapping) {
+      if ($options.fieldMapping) {
         inputs = _translateFields(inputs);
       }
       return inputs;

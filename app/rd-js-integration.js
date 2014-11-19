@@ -3,14 +3,14 @@ var RdIntegration = (function () {
   var $form,
     $token_rdstation,
     $identifier,
-    $custom_params,
+    $options,
     $accountSettings,
 
     REJECTED_FIELDS = ['captcha', '_wpcf7', '_wpcf7_version', '_wpcf7_unit_tag', '_wpnonce', '_wpcf7_is_ajax_call', '_wpcf7_locale'],
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
     $,
 
-    _withjQuery = function(callback) {
+    _withjQuery = function (callback) {
       if (typeof jQuery === "undefined") {
         _loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", callback);
       } else {
@@ -18,16 +18,16 @@ var RdIntegration = (function () {
       }
     },
 
-    _integrate = function (token_rdstation, identifier, custom_params) {
+    _integrate = function (token_rdstation, identifier, options) {
       _withjQuery(function () {
         $ = jQuery;
-        _setParams(token_rdstation, identifier, custom_params);
+        _setParams(token_rdstation, identifier, options);
         _bindSubmitCallback();
       });
     },
 
-    _setParams = function (token_rdstation, identifier, custom_params) {
-      $custom_params = custom_params || {};
+    _setParams = function (token_rdstation, identifier, options) {
+      $options = options || {};
       $token_rdstation = token_rdstation;
       $identifier = identifier;
     },
@@ -79,7 +79,25 @@ var RdIntegration = (function () {
       var inputs = $($form).find(':input');
       inputs = _removeNotAllowedFields(inputs);
       inputs = inputs.serializeArray();
+      inputs = _fieldMap(inputs);
       inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz);
+      return inputs;
+    },
+
+    _fieldMap = function (inputs) {
+      if ($options.fieldMapping) {
+        inputs = _translateFields(inputs);
+      }
+      return inputs;
+    },
+
+    _translateFields = function (inputs) {
+      $.each(inputs, function() {
+        var newName = $options.fieldMapping[this.name];
+        if (newName) {
+          this.name = newName;
+        }
+      });
       return inputs;
     },
 
@@ -189,7 +207,7 @@ var RdIntegration = (function () {
 
 }());
 
-function RDStationFormIntegration(token_rdstation, identifier, custom_params) {
+function RDStationFormIntegration(token_rdstation, identifier, options) {
   'use strict';
-  RdIntegration.integrate(token_rdstation, identifier, custom_params);
+  RdIntegration.integrate(token_rdstation, identifier, options);
 }

@@ -4,12 +4,27 @@
 </head>
 <body>
 
-<form id="1" method="post" name="form_1" action="http://teste.com.br" target="_blank">
+<form id="0" method="post" name="form_1" action="http://teste.com.br" target="_blank">
   <div class="mysite_form_row name_row">
-    <input type="text" name="name" value="NOME">
+    <input type="text" name="nomezera" value="NOME">
   </div>
   <div class="mysite_form_row email_row">
-    <input type="text" name="e_mail" value="E-MAIL">
+    <input type="text" name="shallNotPass" value="E-MAIL">
+  </div>
+  <input type="password" name="senha" value="senha">
+  <input type="hidden" name="hidden field" value="">
+  <input type="text" name="captcha" value="captcha">
+<input type="submit">
+</form>
+<br />
+<br />
+
+<form id="1" method="post" name="form_1" action="http://teste.com.br" target="_blank">
+  <div class="mysite_form_row name_row">
+    <input type="text" name="TXTname" value="NOME">
+  </div>
+  <div class="mysite_form_row email_row">
+    <input type="text" name="TXTemail" value="E-MAIL">
   </div>
   <input type="password" name="senha" value="senha">
   <input type="hidden" name="hidden field" value="">
@@ -58,8 +73,14 @@
 <!-- <script type ='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script> -->
 <script type ='text/javascript' src="./app/rd-js-integration.js"></script>
 <script type ='text/javascript'>
-    // RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing input inside <div>');
-    RdIntegration.integrate('96c58d10dfe995a47d8c8fa8426b2396', 'Enviando parametros', {});
+    var meus_campos = {
+      TXTemail: "email",
+      //campoNaoExistente: "naoDeveQuebrar",
+      TXTname: "name"
+    }
+    options = { fieldMapping: meus_campos }
+    RdIntegration.integrate('96c58d10dfe995a47d8c8fa8426b2396', 'Enviando parametros', options);
+    // RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing input inside <div>', options);
 </script>
 
 </body>

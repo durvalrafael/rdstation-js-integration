@@ -79,9 +79,16 @@ var RdIntegration = (function () {
       var inputs = $($form).find(':input');
       inputs = _removeNotAllowedFields(inputs);
       inputs = inputs.serializeArray();
+      inputs = inputs._fieldMap();
       inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz);
       return inputs;
     },
+
+    _fieldMap = function (inputs) {
+
+    },
+
+    _translateFields = function (inputs, element)
 
     _submitForm = function () {
       $form.submit();

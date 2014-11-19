@@ -10,7 +10,7 @@ var RdIntegration = (function () {
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
     $,
 
-    _withjQuery = function(callback) {
+    _withjQuery = function (callback) {
       if (typeof jQuery === "undefined") {
         _loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", callback);
       } else {

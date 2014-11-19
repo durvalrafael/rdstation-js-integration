@@ -93,7 +93,6 @@ var RdIntegration = (function () {
 
     _translateFields = function (inputs) {
       $.each(inputs, function() {
-        debugger;
         var newName = $options.fieldMapping[this.name];
         if (newName) {
           this.name = newName;

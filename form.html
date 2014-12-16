@@ -5,15 +5,12 @@
 <body>
 
 <form id="0" method="post" name="form_1" action="http://teste.com.br" target="_blank">
-  <div class="mysite_form_row name_row">
-    <input type="text" name="nomezera" value="NOME">
+  <div style="display:none;">
+    <input type="text" name="email" value="xunda@hidden.com">
   </div>
   <div class="mysite_form_row email_row">
-    <input type="text" name="shallNotPass" value="E-MAIL">
+    <input type="text" name="nome" value="XUNDA HIDDEN">
   </div>
-  <input type="password" name="senha" value="senha">
-  <input type="hidden" name="hidden field" value="">
-  <input type="text" name="captcha" value="captcha">
 <input type="submit">
 </form>
 <br />
@@ -56,31 +53,9 @@
   <input type="submit">
 </form>
 
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-52865009-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
-<!-- <script type ='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script> -->
 <script type ='text/javascript' src="./app/rd-js-integration.js"></script>
 <script type ='text/javascript'>
-    var meus_campos = {
-      TXTemail: "email",
-      //campoNaoExistente: "naoDeveQuebrar",
-      TXTname: "name"
-    }
-    options = { fieldMapping: meus_campos }
-    RdIntegration.integrate('96c58d10dfe995a47d8c8fa8426b2396', 'Enviando parametros', options);
-    // RDStationFormIntegration('96c58d10dfe995a47d8c8fa8426b2396', 'Testing input inside <div>', options);
+    RdIntegration.integrate('96c58d10dfe995a47d8c8fa8426b2396', 'Enviando parametros');
 </script>
 
 </body>

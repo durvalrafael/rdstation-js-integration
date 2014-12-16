@@ -123,7 +123,7 @@ var RdIntegration = (function () {
     },
 
     _isAllowedField = function (element) {
-      return !(_isHidden(element) || _isPassword(element) || _isRejectedField(element));
+      return _isEmailField(element) || !(_isHidden(element) || _isPassword(element) || _isRejectedField(element));
     },
 
     _isRejectedField = function (element) {

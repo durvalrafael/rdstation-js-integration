@@ -32,3 +32,7 @@ You may have noticed that the script wasn’t deployed after it has passed the t
 
 To make deploy task works, fill `.aws_credentials` with your Amazon S3 credentials.
 
+## Versioning
+
+Any changes must generate a new version of the script. This project uses [semantic versioning](http://semver.org/).
+MAJOR and MINOR versions changes must be notificated in  RD Station blog. PATCH version changing doesn't.

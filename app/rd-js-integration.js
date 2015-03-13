@@ -66,12 +66,16 @@ var RdIntegration = (function () {
       if (!_findEmail(inputs)) {
         return;
       }
-      if ($form[0].checkValidity()) {
-        if ($form[0].checkValidity() ) {
-        _post(inputs, _submitForm);
-        event.preventDefault();
+
+      if (typeof $form[0].checkValidity == 'function') {
+        if (!$form[0].checkValidity()) {
+          return;
         }
       }
+      _post(inputs, _submitForm);
+      event.preventDefault();
+
+
     },
 
     _findForm = function (button) {

@@ -68,15 +68,14 @@ var RdIntegration = (function () {
       }
 
       if (typeof $form[0].checkValidity == 'function') {
-        if ($form[0].checkValidity() ) {
-        _post(inputs, _submitForm);
-        event.preventDefault();
+        if (!$form[0].checkValidity()) {
+          return;
         }
       }
-      else {
-        _post(inputs, _submitForm);
-        event.preventDefault();
-      }
+      _post(inputs, _submitForm);
+      event.preventDefault();
+
+
     },
 
     _findForm = function (button) {

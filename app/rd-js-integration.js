@@ -190,7 +190,7 @@ var RdIntegration = (function () {
 
     _getCookieId = function () {
       var leadTrackingCookie = _read_cookie("rdtrk");
-      if (typeof leadTrackingCookie !== 'undefined') {
+      if (leadTrackingCookie != null) {
        leadTrackingCookie = JSON.parse(unescape(leadTrackingCookie));
        return leadTrackingCookie.id;
       }

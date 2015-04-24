@@ -17,9 +17,15 @@ var RdIntegration = (function () {
         callback();
       }
     },
+    _withDependencies = function (callback) {
+      _withjQuery(function () {
+        jQuery.getScript('https://d335luupugsy2.cloudfront.net/js/lead-tracking/0.1.0/plugins/jquery.cookie.v1.4.1.min.js', callback);
+      });
+
+    },
 
     _integrate = function (token_rdstation, identifier, options) {
-      _withjQuery(function () {
+      _withDependencies(function () {
         $ = jQuery;
         _setParams(token_rdstation, identifier, options);
         _bindSubmitCallback();
@@ -138,6 +144,13 @@ var RdIntegration = (function () {
       return (name && REJECTED_FIELDS.indexOf(name.toLowerCase()) >= 0);
     },
 
+    _getCookieId = function () {
+      if (typeof jQuery.cookie("rdtrk") !== 'undefined') {
+        jQuery.cookie.json = true;
+       return jQuery.cookie("rdtrk").id;
+      }
+    },
+
     _getAccountSettings = function () {
       return {
         identifier: {
@@ -188,8 +201,17 @@ var RdIntegration = (function () {
       return null;
     },
 
+    _insertClientId = function(formData){
+      var client_id = _getCookieId();
+      if (typeof client_id !== "undefined") {
+        formData.push({name: 'client_id', value: client_id});
+      }
+      return formData;
+    },
+
     _post = function (formData, callback) {
-      _withjQuery(function () {
+      formData = _insertClientId(formData);
+      _withDependencies(function () {
         jQuery.ajax({
           type: 'POST',
           url: 'https://www.rdstation.com.br/api/1.2/conversions',

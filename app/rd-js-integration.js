@@ -10,7 +10,7 @@ var RdIntegration = (function () {
     COMMON_EMAIL_FIELDS = ['email', 'e-mail', 'e_mail', 'email_lead', 'your-email'],
     $,
 
-    _withDependencies = function (callback) {
+    _withjQuery = function (callback) {
       if (typeof jQuery === "undefined") {
         _loadScript("http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js", callback);
       } else {
@@ -19,7 +19,7 @@ var RdIntegration = (function () {
     },
 
     _integrate = function (token_rdstation, identifier, options) {
-      _withDependencies(function () {
+      _withjQuery(function () {
         $ = jQuery;
         _setParams(token_rdstation, identifier, options);
         _bindSubmitCallback();
@@ -190,7 +190,7 @@ var RdIntegration = (function () {
 
     _getCookieId = function () {
       var leadTrackingCookie = _read_cookie("rdtrk");
-      if (leadTrackingCookie != null) {
+      if (leadTrackingCookie !== null) {
        leadTrackingCookie = JSON.parse(unescape(leadTrackingCookie));
        return leadTrackingCookie.id;
       }
@@ -206,7 +206,7 @@ var RdIntegration = (function () {
 
     _post = function (formData, callback) {
       formData = _insertClientId(formData);
-      _withDependencies(function () {
+      _withjQuery(function () {
         jQuery.ajax({
           type: 'POST',
           url: 'https://www.rdstation.com.br/api/1.2/conversions',

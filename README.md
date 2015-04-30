@@ -1,5 +1,7 @@
 # RD Station JS Integration
 
+[![Code Climate](https://codeclimate.com/repos/55422dbfe30ba03b8901455c/badges/63c81bce6e34fbb49fc7/gpa.svg)](https://codeclimate.com/repos/55422dbfe30ba03b8901455c/feed)
+
 This is a project to integrate any form with RD Station. Mainly, it posts information filled in the form to RD Station API, creating a new Lead Conversion.
 
 It uses Grunt JS Task Runner, Karma Test Runner, Jasmine Framework, Circle CI for continuos integrations and Amazon Cloudfront for the CDN.

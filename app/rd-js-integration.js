@@ -83,26 +83,12 @@ var RdIntegration = (function () {
     },
 
     _prepareFormData = function () {
-      var inputs = $($form).find(':input'),
-          leadSourceData = _prepareLeadSourceData();
+      var inputs = $($form).find(':input');
       inputs = _removeNotAllowedFields(inputs);
       inputs = inputs.serializeArray();
       inputs = _fieldMap(inputs);
-      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz, leadSourceData.ref, leadSourceData.query_params);
+      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz, _getReferrer(), _getQueryParams());
       return inputs;
-    },
-
-    _prepareLeadSourceData = function() {
-      return {
-        ref: {
-          name: 'referrer',
-          value: _getReferrer()
-        },
-        query_params: {
-          name: 'query_params',
-          value: _getQueryParams()
-        }
-      };
     },
 
     _fieldMap = function (inputs) {
@@ -219,11 +205,17 @@ var RdIntegration = (function () {
     },
 
     _getReferrer = function() {
-      return document.referrer;
+      return {
+        name: 'referrer',
+        value: document.referrer
+      };
     },
 
     _getQueryParams = function() {
-      return location.search.substring(1);
+      return {
+        name: 'query_params',
+        value: location.search.substring(1)
+      };
     },
 
     _post = function (formData, callback) {

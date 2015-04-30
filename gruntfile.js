@@ -4,11 +4,11 @@ module.exports = function(grunt) {
     aws: grunt.file.readJSON('.aws_config.json'),
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! Resultados Digitais - <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
         src: 'app/<%= pkg.name %>.js',
-        dest: 'app/<%= pkg.name %>.min.js'
+        dest: 'build/<%= pkg.name %>.min.js'
       }
     },
     jshint: {
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         files: [
           { action: 'upload',
             expand: true,
-            cwd: 'app/',
+            cwd: 'build/',
             src: ['<%= pkg.name %>.min.js'],
             dest: '<%= aws.destination %>/<%= pkg.version %>/'
           }

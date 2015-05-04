@@ -71,6 +71,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('deploy', ['aws_s3']);
-  grunt.registerTask('default', ['jshint', 'karma', 'uglify', 'jsdoc']);
+  grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

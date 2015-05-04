@@ -87,7 +87,7 @@ var RdIntegration = (function () {
       inputs = _removeNotAllowedFields(inputs);
       inputs = inputs.serializeArray();
       inputs = _fieldMap(inputs);
-      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz);
+      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz, _getReferrer(), _getQueryParams());
       return inputs;
     },
 
@@ -202,6 +202,20 @@ var RdIntegration = (function () {
         formData.push({name: 'client_id', value: client_id});
       }
       return formData;
+    },
+
+    _getReferrer = function() {
+      return {
+        name: 'referrer',
+        value: document.referrer
+      };
+    },
+
+    _getQueryParams = function() {
+      return {
+        name: 'query_params',
+        value: location.search.substring(1)
+      };
     },
 
     _post = function (formData, callback) {

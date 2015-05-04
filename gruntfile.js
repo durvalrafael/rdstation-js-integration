@@ -44,6 +44,12 @@ module.exports = function(grunt) {
             cwd: 'build/',
             src: ['<%= pkg.name %>.min.js'],
             dest: '<%= aws.destination %>/<%= pkg.version %>/'
+          },
+          { action: 'upload',
+            expand: true,
+            cwd: 'build/',
+            src: ['**'],
+            dest: '<%= aws.destination %>/latest/'
           }
         ]
       },

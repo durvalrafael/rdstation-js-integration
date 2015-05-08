@@ -44,6 +44,12 @@ module.exports = function(grunt) {
             cwd: 'build/',
             src: ['<%= pkg.name %>.min.js'],
             dest: '<%= aws.destination %>/<%= pkg.version %>/'
+          },
+          { action: 'upload',
+            expand: true,
+            cwd: 'build/',
+            src: ['**'],
+            dest: '<%= aws.destination %>/latest/'
           }
         ]
       },
@@ -65,6 +71,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
 
   grunt.registerTask('deploy', ['aws_s3']);
-  grunt.registerTask('default', ['jshint', 'karma', 'uglify', 'jsdoc']);
+  grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

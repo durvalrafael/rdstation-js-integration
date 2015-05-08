@@ -1,6 +1,6 @@
 {
   "name": "rd-js-integration",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "rdstation-js-integration ========================",
   "main": "rd-js-integration.js",
   "scripts": {

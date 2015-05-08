@@ -67,7 +67,7 @@ var RdIntegration = (function () {
         return;
       }
 
-      if (typeof $form[0].checkValidity == 'function') {
+      if (typeof $form[0].checkValidity === 'function') {
         if (!$form[0].checkValidity()) {
           return;
         }
@@ -110,10 +110,6 @@ var RdIntegration = (function () {
 
     _submitForm = function () {
       $form.submit();
-    },
-
-    _isHidden = function (element) {
-      return $(element).is(":hidden");
     },
 
     _isPassword = function (element) {

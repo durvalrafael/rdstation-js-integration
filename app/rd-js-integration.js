@@ -184,14 +184,6 @@ var RdIntegration = (function () {
       return null;
     },
 
-    _getCookieId = function () {
-      var leadTrackingCookie = _read_cookie("rdtrk");
-      if (leadTrackingCookie !== null) {
-       leadTrackingCookie = JSON.parse(unescape(leadTrackingCookie));
-       return leadTrackingCookie.id;
-      }
-    },
-
     _getItem = function (sKey) {
       if (!sKey) { return null; }
       return decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
@@ -225,9 +217,9 @@ var RdIntegration = (function () {
         jQuery.ajax({
           type: 'POST',
           url: 'https://www.rdstation.com.br/api/1.2/conversions',
-          // url: 'http://localhost:3000/api/1.2/conversions',
           data: formData,
           crossDomain: true,
+          xhrFields: { withCredentials: true },
           error: function (response) {
             console.log("ERROR - ");
             console.log(response);

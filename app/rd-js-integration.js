@@ -197,8 +197,24 @@ var RdIntegration = (function () {
         value: location.search.substring(1)
       };
     },
+    _getCookieId = function () {
+      var leadTrackingCookie = _read_cookie("rdtrk");
+      if (leadTrackingCookie !== null) {
+       leadTrackingCookie = JSON.parse(unescape(leadTrackingCookie));
+       return leadTrackingCookie.id;
+      }
+    },
+
+    _insertClientId = function(formData){
+      var client_id = _getCookieId();
+      if (typeof client_id !== "undefined") {
+        formData.push({name: 'client_id', value: client_id});
+      }
+      return formData;
+    },
 
     _post = function (formData, callback) {
+      formData = _insertClientId(formData);
       _withjQuery(function () {
         jQuery.ajax({
           type: 'POST',

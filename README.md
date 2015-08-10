@@ -33,7 +33,7 @@ Gruntfile has a task `deploy` for deploying any `app/*.min.js` file into Amazon 
 When deploying, you have to set the environment you intend to deploy. Follow this:
 
 ```
-grunt deploy--env=beta
+grunt deploy --env=beta
 ```
 
 ```

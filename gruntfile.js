@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         progress: 'dots',
         region: 'sa-east-1'
       },
-      production: {
+      beta: {
         options: {
           bucket: '<%= aws.bucket %>'
         },
@@ -43,13 +43,20 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'build/',
             src: ['<%= pkg.name %>.min.js'],
-            dest: '<%= aws.destination %>/<%= pkg.version %>/'
+            dest: '<%= aws.destination %>/beta/'
           },
+        ]
+      },
+      production: {
+        options: {
+          bucket: '<%= aws.bucket %>'
+        },
+        files: [
           { action: 'upload',
             expand: true,
             cwd: 'build/',
             src: ['**'],
-            dest: '<%= aws.destination %>/latest/'
+            dest: '<%= aws.destination %>/stable/'
           }
         ]
       },
@@ -70,7 +77,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-aws-s3');
   grunt.loadNpmTasks('grunt-jsdoc');
 
-  grunt.registerTask('deploy', ['aws_s3']);
+  var env = grunt.option('env') || 'beta';
+  grunt.registerTask('deploy', ['aws_s3:' + env]);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

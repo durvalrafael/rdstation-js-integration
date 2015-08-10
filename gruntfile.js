@@ -47,7 +47,7 @@ module.exports = function(grunt) {
           },
         ]
       },
-      production: {
+      stable: {
         options: {
           bucket: '<%= aws.bucket %>'
         },

@@ -77,8 +77,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-aws-s3');
   grunt.loadNpmTasks('grunt-jsdoc');
 
-  var env = grunt.option('env') || 'beta';
-  grunt.registerTask('deploy', ['aws_s3:' + env]);
+  grunt.registerTask('deploy', ['aws_s3:beta']);
+  grunt.registerTask('deploy:beta', ['aws_s3:beta']);
+  grunt.registerTask('deploy:stable', ['aws_s3:stable']);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

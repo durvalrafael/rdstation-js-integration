@@ -62,15 +62,46 @@ module.exports = function(grunt) {
             }
         }
     }
+    aws_cloudfront: {
+      invalidate_cloudfront: {
+        options: {
+          key: '<%= aws.AWSAccessKeyId %>',
+          secret: '<%= aws.AWSSecretKey %>',
+          distribution: 'E26I7QL64NWP26' //BUCKET rdstation-static
+        },
+        beta: {
+          files: [{
+            expand: true,
+            cwd: './js/integration/beta',
+            //src: ['**/*'], WHAT GOES HERE?
+            filter: 'isFile',
+            dest: './js/integration/beta' // IS IT RIGHT?
+          }]
+        },
+        stable: {
+          files: [{
+            expand: true,
+            cwd: './js/integration/stable',
+            // src: ['**/*'], WHAT GOES HERE?
+            filter: 'isFile',
+            dest: './js/integration/stable' // IS IT RIGHT?
+          }]
+        }
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-aws-s3');
+  grunt.loadNpmTasks('grunt-invalidate-cloudfront');
   grunt.loadNpmTasks('grunt-jsdoc');
 
+
+  var env = grunt.option('env') || 'beta';
   grunt.registerTask('deploy', ['aws_s3']);
+  grunt.registerTask('invalidate-cache', ['aws_cloudfront:' + env]);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

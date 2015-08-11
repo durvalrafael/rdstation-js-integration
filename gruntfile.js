@@ -82,12 +82,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-aws');
 
-
   grunt.registerTask('deploy', ['s3:beta', 'cloudfront:beta']);
   grunt.registerTask('deploy:beta', ['s3:beta', 'cloudfront:beta']);
   grunt.registerTask('deploy:stable', ['s3:stable', 'cloudfront:stable']);
+
   grunt.registerTask('invalidate-cache:beta', ['cloudfront:beta']);
   grunt.registerTask('invalidate-cache:stable', ['cloudfront:stable']);
-  grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
+  grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 };

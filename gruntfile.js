@@ -52,6 +52,20 @@ module.exports = function(grunt) {
         src: ['<%= pkg.name %>.min.js'],
         dest: '<%= aws.destination %>/stable/'
       }
+    },
+    cloudfront: {
+      options: {
+        accessKeyId: '<%= aws.AWSAccessKeyId %>',
+        secretAccessKey: '<%= aws.AWSSecretKey %>',
+        distributionId: '<%= aws.distributionId %>',
+      },
+      html: {
+        options: {
+          invalidations: [
+            '/js/integration'
+          ],
+        }
+      }
     }
   });
 

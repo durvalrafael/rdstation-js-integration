@@ -36,15 +36,21 @@ module.exports = function(grunt) {
     },
     s3: {
       options: {
-        accessKeyId: "<%= aws.accessKeyId %>",
-        secretAccessKey: "<%= aws.secretAccessKey %>",
+        accessKeyId: '<%= aws.AWSAccessKeyId %>',
+        secretAccessKey: '<%= aws.AWSSecretKey %>',
         bucket: '<%= aws.bucket %>',
-        access: 'public-read'
+        access: 'public-read',
+        region: 'sa-east-1'
       },
       beta: {
         cwd: 'build/',
         src: ['<%= pkg.name %>.min.js'],
         dest: '<%= aws.destination %>/beta/'
+      }
+      stable: {
+        cwd: 'build/',
+        src: ['<%= pkg.name %>.min.js'],
+        dest: '<%= aws.destination %>/stable/'
       }
     }
   });
@@ -56,9 +62,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-aws');
 
 
-  var env = grunt.option('env') || 'beta';
   grunt.registerTask('deploy', ['s3:beta']);
-  grunt.registerTask('invalidate-cache', ['aws_cloudfront:' + env]);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

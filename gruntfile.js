@@ -26,67 +26,25 @@ module.exports = function(grunt) {
         configFile: 'test/karma.conf.js'
       }
     },
-    aws_s3: {
-      options: {
-        differential: true,
-        accessKeyId: '<%= aws.AWSAccessKeyId %>',
-        secretAccessKey: '<%= aws.AWSSecretKey %>',
-        progress: 'dots',
-        region: 'sa-east-1'
-      },
-      production: {
-        options: {
-          bucket: '<%= aws.bucket %>'
-        },
-        files: [
-          { action: 'upload',
-            expand: true,
-            cwd: 'build/',
-            src: ['<%= pkg.name %>.min.js'],
-            dest: '<%= aws.destination %>/<%= pkg.version %>/'
-          },
-          { action: 'upload',
-            expand: true,
-            cwd: 'build/',
-            src: ['**'],
-            dest: '<%= aws.destination %>/latest/'
-          }
-        ]
-      },
-    },
     jsdoc : {
-        dist : {
-            src: ['app/*.js', 'test/*.js'], 
-            options: {
-                destination: 'docs'
-            }
-        }
-    }
-    aws_cloudfront: {
-      invalidate_cloudfront: {
+      dist : {
+        src: ['app/*.js', 'test/*.js'],
         options: {
-          key: '<%= aws.AWSAccessKeyId %>',
-          secret: '<%= aws.AWSSecretKey %>',
-          distribution: 'E26I7QL64NWP26' //BUCKET rdstation-static
-        },
-        beta: {
-          files: [{
-            expand: true,
-            cwd: './js/integration/beta',
-            //src: ['**/*'], WHAT GOES HERE?
-            filter: 'isFile',
-            dest: './js/integration/beta' // IS IT RIGHT?
-          }]
-        },
-        stable: {
-          files: [{
-            expand: true,
-            cwd: './js/integration/stable',
-            // src: ['**/*'], WHAT GOES HERE?
-            filter: 'isFile',
-            dest: './js/integration/stable' // IS IT RIGHT?
-          }]
+          destination: 'docs'
         }
+      }
+    },
+    s3: {
+      options: {
+        accessKeyId: "<%= aws.accessKeyId %>",
+        secretAccessKey: "<%= aws.secretAccessKey %>",
+        bucket: '<%= aws.bucket %>',
+        access: 'public-read'
+      },
+      beta: {
+        cwd: 'build/',
+        src: ['<%= pkg.name %>.min.js'],
+        dest: '<%= aws.destination %>/beta/'
       }
     }
   });
@@ -94,13 +52,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-aws-s3');
-  grunt.loadNpmTasks('grunt-invalidate-cloudfront');
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-aws');
 
 
   var env = grunt.option('env') || 'beta';
-  grunt.registerTask('deploy', ['aws_s3']);
+  grunt.registerTask('deploy', ['s3:beta']);
   grunt.registerTask('invalidate-cache', ['aws_cloudfront:' + env]);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 

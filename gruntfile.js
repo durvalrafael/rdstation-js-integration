@@ -77,6 +77,8 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('deploy', ['s3:beta']);
+  grunt.registerTask('deploy:beta', ['s3:beta']);
+  grunt.registerTask('deploy:stable', ['s3:stable']);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

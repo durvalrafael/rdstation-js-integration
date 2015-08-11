@@ -184,6 +184,19 @@ var RdIntegration = (function () {
       return null;
     },
 
+    _getReferrer = function() {
+      return {
+        name: 'referrer',
+        value: document.referrer
+      };
+    },
+
+    _getQueryParams = function() {
+      return {
+        name: 'query_params',
+        value: location.search.substring(1)
+      };
+    },
     _getCookieId = function () {
       var leadTrackingCookie = _read_cookie("rdtrk");
       if (leadTrackingCookie !== null) {
@@ -200,20 +213,6 @@ var RdIntegration = (function () {
       return formData;
     },
 
-    _getReferrer = function() {
-      return {
-        name: 'referrer',
-        value: document.referrer
-      };
-    },
-
-    _getQueryParams = function() {
-      return {
-        name: 'query_params',
-        value: location.search.substring(1)
-      };
-    },
-
     _post = function (formData, callback) {
       formData = _insertClientId(formData);
       _withjQuery(function () {
@@ -222,7 +221,9 @@ var RdIntegration = (function () {
           url: 'https://www.rdstation.com.br/api/1.2/conversions',
           data: formData,
           crossDomain: true,
+          xhrFields: { withCredentials: true },
           error: function (response) {
+            console.log("ERROR - ");
             console.log(response);
           },
           complete: function () {

@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         cwd: 'build/',
         src: ['<%= pkg.name %>.min.js'],
         dest: '<%= aws.destination %>/beta/'
-      }
+      },
       stable: {
         cwd: 'build/',
         src: ['<%= pkg.name %>.min.js'],
@@ -59,10 +59,17 @@ module.exports = function(grunt) {
         secretAccessKey: '<%= aws.AWSSecretKey %>',
         distributionId: '<%= aws.distributionId %>',
       },
-      html: {
+      beta: {
         options: {
           invalidations: [
-            '/js/integration'
+            '/js/integration/beta/*'
+          ],
+        }
+      },
+      stable: {
+        options: {
+          invalidations: [
+            '/js/integration/stable/*'
           ],
         }
       }
@@ -76,10 +83,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-aws');
 
 
-  grunt.registerTask('deploy', ['s3:beta']);
-  grunt.registerTask('deploy:beta', ['s3:beta']);
-  grunt.registerTask('deploy:stable', ['s3:stable']);
-  grunt.registerTask('invalidate-cache', ['cloudfront']);
+  grunt.registerTask('deploy', ['s3:beta', 'cloudfront:beta']);
+  grunt.registerTask('deploy:beta', ['s3:beta', 'cloudfront:beta']);
+  grunt.registerTask('deploy:stable', ['s3:stable', 'cloudfront:stable']);
+  grunt.registerTask('invalidate-cache:beta', ['cloudfront:beta']);
+  grunt.registerTask('invalidate-cache:stable', ['cloudfront:stable']);
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
 
 };

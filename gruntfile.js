@@ -26,60 +26,68 @@ module.exports = function(grunt) {
         configFile: 'test/karma.conf.js'
       }
     },
-    aws_s3: {
+    jsdoc : {
+      dist : {
+        src: ['app/*.js', 'test/*.js'],
+        options: {
+          destination: 'docs'
+        }
+      }
+    },
+    s3: {
       options: {
-        differential: true,
         accessKeyId: '<%= aws.AWSAccessKeyId %>',
         secretAccessKey: '<%= aws.AWSSecretKey %>',
-        progress: 'dots',
+        bucket: '<%= aws.bucket %>',
+        access: 'public-read',
         region: 'sa-east-1'
       },
       beta: {
+        cwd: 'build/',
+        src: ['<%= pkg.name %>.min.js'],
+        dest: '<%= aws.destination %>/beta/'
+      },
+      stable: {
+        cwd: 'build/',
+        src: ['<%= pkg.name %>.min.js'],
+        dest: '<%= aws.destination %>/stable/'
+      }
+    },
+    cloudfront: {
+      options: {
+        accessKeyId: '<%= aws.AWSAccessKeyId %>',
+        secretAccessKey: '<%= aws.AWSSecretKey %>',
+        distributionId: '<%= aws.distributionId %>',
+      },
+      beta: {
         options: {
-          bucket: '<%= aws.bucket %>'
-        },
-        files: [
-          { action: 'upload',
-            expand: true,
-            cwd: 'build/',
-            src: ['<%= pkg.name %>.min.js'],
-            dest: '<%= aws.destination %>/beta/'
-          },
-        ]
+          invalidations: [
+            '/js/integration/beta/*'
+          ],
+        }
       },
       stable: {
         options: {
-          bucket: '<%= aws.bucket %>'
-        },
-        files: [
-          { action: 'upload',
-            expand: true,
-            cwd: 'build/',
-            src: ['**'],
-            dest: '<%= aws.destination %>/stable/'
-          }
-        ]
-      },
-    },
-    jsdoc : {
-        dist : {
-            src: ['app/*.js', 'test/*.js'], 
-            options: {
-                destination: 'docs'
-            }
+          invalidations: [
+            '/js/integration/stable/*'
+          ],
         }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-aws-s3');
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-aws');
 
-  grunt.registerTask('deploy', ['aws_s3:beta']);
-  grunt.registerTask('deploy:beta', ['aws_s3:beta']);
-  grunt.registerTask('deploy:stable', ['aws_s3:stable']);
+  grunt.registerTask('deploy', ['s3:beta', 'cloudfront:beta']);
+  grunt.registerTask('deploy:beta', ['s3:beta', 'cloudfront:beta']);
+  grunt.registerTask('deploy:stable', ['s3:stable', 'cloudfront:stable']);
+
+  grunt.registerTask('invalidate-cache:beta', ['cloudfront:beta']);
+  grunt.registerTask('invalidate-cache:stable', ['cloudfront:stable']);
+
   grunt.registerTask('default', ['jshint', 'karma', 'uglify']);
-
 };

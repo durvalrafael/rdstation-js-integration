@@ -226,9 +226,9 @@ var RdIntegration = (function () {
             console.log("ERROR - ");
             console.log(response);
           },
-          complete: function () {
+          complete: function(jqXHR, textStatus) {
             if (callback) {
-              callback();
+              callback(jqXHR, textStatus);
             }
           }
         });

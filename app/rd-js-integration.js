@@ -87,7 +87,7 @@ var RdIntegration = (function () {
       inputs = _removeNotAllowedFields(inputs);
       inputs = inputs.serializeArray();
       inputs = _fieldMap(inputs);
-      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz, _getReferrer(), _getQueryParams());
+      inputs.push($accountSettings.identifier, $accountSettings.token, $accountSettings.c_utmz, $accountSettings.traffic_source, _getReferrer(), _getQueryParams());
       return inputs;
     },
 
@@ -147,6 +147,10 @@ var RdIntegration = (function () {
         c_utmz: {
           name: 'c_utmz',
           value: _read_cookie('__utmz')
+        },
+        traffic_source: {
+          name: 'traffic_source',
+          value: _read_cookie('__trf.src')
         }
       };
     },

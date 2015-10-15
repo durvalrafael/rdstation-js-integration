@@ -40,9 +40,9 @@ grunt deploy:beta
 grunt deploy:stable
 ```
 
-You may have noticed that the script wasn’t deployed after it has passed the tests. We made this choice due to secutiry reasons: The `grunt deploy` task needs the Amazon credentials. Since the repository is public, it's not safe to reveal company credentials in it. To avoid test errors, you will find at project files a `.json` with generic credentials for amazon: `/.aws_credentials.json`.
+You may have noticed that the script wasn’t deployed after it has passed the tests. We made this choice due to secutiry reasons: The `grunt deploy` task needs the Amazon credentials. Since the repository is public, it's not safe to reveal company credentials in it. To avoid test errors, you will find at project files a `.json` with generic credentials for amazon: `/.aws_config.json`.
 
-To make deploy task works, fill `.aws_credentials` with your Amazon S3 credentials.
+To make deploy task works, fill `.aws_config.json` with your Amazon S3 credentials.
 
 ## Versioning
 

@@ -222,7 +222,7 @@ var RdIntegration = (function () {
       _withjQuery(function () {
         jQuery.ajax({
           type: 'POST',
-          url: 'https://www.rdstation.com.br/api/1.2/conversions',
+          url: 'https://www.rdstation.com.br/api/1.3/conversions',
           data: formData,
           crossDomain: true,
           xhrFields: { withCredentials: true },
